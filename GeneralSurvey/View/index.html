@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Survey Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="auth-section">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <!-- Survey Section -->
+    <div id="survey-section" style="display:none;">
+        <h2>Survey</h2>
+        <p id="already-submitted" style="color: red; display:none;">You have already submitted the survey!</p>
+        <form id="survey-form">
+            <p>1. How satisfied are you with our service?</p>
+            <input type="radio" id="q1_1" name="q1" value="Very Satisfied"> Very Satisfied<br>
+            <input type="radio" id="q1_2" name="q1" value="Satisfied"> Satisfied<br>
+            <input type="radio" id="q1_3" name="q1" value="Neutral"> Neutral<br>
+            <input type="radio" id="q1_4" name="q1" value="Dissatisfied"> Dissatisfied<br>
+
+            <p>2. How likely are you to recommend us?</p>
+            <input type="radio" id="q2_1" name="q2" value="Very Likely"> Very Likely<br>
+            <input type="radio" id="q2_2" name="q2" value="Likely"> Likely<br>
+            <input type="radio" id="q2_3" name="q2" value="Unlikely"> Unlikely<br>
+            <input type="radio" id="q2_4" name="q2" value="Very Unlikely"> Very Unlikely<br>
+
+            <p>3. Which features would you like to see in the future?</p>
+            <input type="text" id="q3" name="q3" placeholder="Your suggestions">
+
+            <p>4. Any other comments?</p>
+            <textarea id="q4" name="q4" placeholder="Your comments"></textarea><br>
+
+            <button type="submit">Submit Survey</button>
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
