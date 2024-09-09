@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; 
 }
 
 #auth-section, #survey-section {
@@ -49,7 +49,7 @@ button {
 }
 
     button:hover {
-        background-color: #0056b3;
+        background-color: #F33A6A;
     }
 
 textarea {
