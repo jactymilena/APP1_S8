@@ -1,0 +1,12 @@
+@GeneralSurvey_HostAddress = http://localhost:5244
+
+GET {{GeneralSurvey_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{GeneralSurvey_HostAddress}}/user/
+Accept: application/json
+
+###
+
