@@ -66,5 +66,6 @@ namespace GeneralSurvey.Services
                 _formResponsesList.RemoveAt(formResponseIndex);
             }
             return formResponseIndex >= 0;
+        }
     }
 }
