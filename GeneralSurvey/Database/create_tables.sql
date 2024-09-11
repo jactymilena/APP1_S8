@@ -1,0 +1,46 @@
+DROP TABLE USER;
+DROP TABLE SURVEY;
+DROP TABLE QUESTIONS;
+DROP TABLE SURVEY_QUESTIONS;
+DROP TABLE SURVEY_USER;
+ 
+CREATE TABLE USER (
+    id INTEGER PRIMARY KEY NOT NULL,
+    username CHAR(50) NOT NULL, 
+    password CHAR(50) NOT NULL 
+);
+
+CREATE TABLE SURVEY (
+    id INTEGER PRIMARY KEY NOT NULL, 
+    title
+);
+
+CREATE TABLE QUESTIONS (
+    id INTEGER PRIMARY KEY NOT NULL, 
+    description TEXT, 
+    response CHAR(50)
+);
+
+CREATE TABLE SURVEY_QUESTIONS (
+    id INTEGER PRIMARY KEY, 
+    id_survey INTEGER NOT NULL, 
+    id_question INTEGER NOT NULL,
+    FOREIGN KEY(id_survey) 
+        REFERENCES SURVEY (id),
+    FOREIGN KEY(id_question)
+        REFERENCES QUESTIONS (id)
+);
+
+CREATE TABLE SURVEY_USER (
+    id INTEGER PRIMARY KEY,
+    id_user INTEGER,
+    id_survey INTEGER,
+    is_filled INTERGER,
+    FOREIGN KEY(id_user) 
+        REFERENCES USER (id),
+    FOREIGN KEY(id_survey) 
+        REFERENCES SURVEY(id)
+);
+
+-- INSERT INTO SURVEY VALUES (1, 'sondage1');
+-- INSERT INTO SURVEY VALUES (2, 'sondage2');

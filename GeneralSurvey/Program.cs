@@ -3,8 +3,10 @@ using GeneralSurvey.Services;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://localhost:5244");
 
 // Add services to the container.
+builder.Services.AddSingleton<IFormResponseService, FormResponseService>();
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<IUserService, UserService>();
