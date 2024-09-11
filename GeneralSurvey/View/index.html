@@ -19,12 +19,19 @@
         </form>
     </div>
 
+    <!-- Survey Choice Section -->
+    <div id="survey-choice-section" style="display:none;">
+        <h2>Choose a Survey</h2>
+        <button id="survey1-button">Survey 1</button>
+        <button id="survey2-button">Survey 2</button>
+    </div>
+
     <!-- Survey Section -->
-    <div id="survey-section" style="display:none;">
+    <div id="survey1-section" style="display:none;">
     <!-- <div> -->
-        <h2>Survey</h2>
+        <h2>Survey 1</h2>
         <p id="already-submitted" style="color: red; display:none;">You have already submitted the survey!</p>
-        <form id="survey-form">
+        <form id="survey1-form">
             <p>1. How satisfied are you with our service?</p>
             <input type="radio" id="q1_1" name="q1" value="Very Satisfied"> Very Satisfied<br>
             <!-- <input type="radio" id="q1_2" name="q1" value="Satisfied"> Satisfied<br>
@@ -42,6 +49,33 @@
 
             <p>4. Any other comments?</p>
             <textarea id="q4" name="q4" placeholder="Your comments"></textarea><br>
+
+            <button type="submit">Submit Survey</button>
+        </form>
+    </div>
+
+    <!-- Survey Section for Survey 2 -->
+    <div id="survey2-section" style="display:none;">
+        <h2>Survey 2</h2>
+        <p id="already-submitted2" style="color: red; display:none;">You have already submitted this survey!</p>
+        <form id="survey2-form">
+            <p>1. What is your favorite product feature?</p>
+            <input type="radio" id="q1_1" name="q1" value="Feature A"> Feature A<br>
+            <input type="radio" id="q1_2" name="q1" value="Feature B"> Feature B<br>
+            <input type="radio" id="q1_3" name="q1" value="Feature C"> Feature C<br>
+            <input type="radio" id="q1_4" name="q1" value="Feature D"> Feature D<br>
+            
+            <p>2. How easy is it to navigate our website?</p>
+            <input type="radio" id="q2_1" name="q2" value="Very Easy"> Very Easy<br>
+            <input type="radio" id="q2_2" name="q2" value="Easy"> Easy<br>
+            <input type="radio" id="q2_3" name="q2" value="Difficult"> Difficult<br>
+            <input type="radio" id="q2_4" name="q2" value="Very Difficult"> Very Difficult<br>
+
+            <p>3. What would you improve on our website?</p>
+            <input type="text" id="q3" name="q3" placeholder="Your suggestions">
+
+            <p>4. Any other feedback?</p>
+            <textarea id="q4" name="q4" placeholder="Your feedback"></textarea><br>
 
             <button type="submit">Submit Survey</button>
         </form>
