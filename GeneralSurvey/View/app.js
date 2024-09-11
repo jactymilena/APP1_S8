@@ -39,6 +39,7 @@ document.getElementById('survey-form').addEventListener('submit', async function
     const q4 = document.getElementById('q4').value;
 
     // Submit survey data with user token
+    //****TODO: voir comment on envoit le data****
     const response = await fetch('https://your-backend-api.com/submit-survey', {
         method: 'POST',
         headers: {
@@ -58,11 +59,12 @@ document.getElementById('survey-form').addEventListener('submit', async function
 });
 
 // Check if user has already submitted survey
+//**TODO: regarder si isActive est a true ou a false**
 async function checkIfAlreadySubmitted() {
-    const response = await fetch('https://your-backend-api.com/check-submission', {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${userToken}` }
-    });
+    // const response = await fetch('https://your-backend-api.com/check-submission', {
+    //     method: 'GET',
+    //     headers: { 'Authorization': `Bearer ${userToken}` }
+    // });
 
     const data = await response.json();
 
