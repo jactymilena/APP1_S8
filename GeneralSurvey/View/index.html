@@ -26,59 +26,18 @@
         <button id="survey2-button">Survey 2</button>
     </div>
 
-    <!-- Survey Section -->
+    <!-- Survey Section for Survey 1 -->
     <div id="survey1-section" style="display:none;">
-    <!-- <div> -->
-        <h2>Survey 1</h2>
-        <p id="already-submitted" style="color: red; display:none;">You have already submitted the survey!</p>
-        <form id="survey1-form">
-            <p>1. How satisfied are you with our service?</p>
-            <input type="radio" id="q1_1" name="q1" value="Very Satisfied"> Very Satisfied<br>
-            <!-- <input type="radio" id="q1_2" name="q1" value="Satisfied"> Satisfied<br>
-            <input type="radio" id="q1_3" name="q1" value="Neutral"> Neutral<br>
-            <input type="radio" id="q1_4" name="q1" value="Dissatisfied"> Dissatisfied<br> -->
-
-            <p>2. How likely are you to recommend us?</p>
-            <input type="radio" id="q2_1" name="q2" value="Very Likely"> Very Likely<br>
-            <!-- <input type="radio" id="q2_2" name="q2" value="Likely"> Likely<br>
-            <input type="radio" id="q2_3" name="q2" value="Unlikely"> Unlikely<br>
-            <input type="radio" id="q2_4" name="q2" value="Very Unlikely"> Very Unlikely<br> -->
-
-            <p>3. Which features would you like to see in the future?</p>
-            <input type="text" id="q3" name="q3" placeholder="Your suggestions">
-
-            <p>4. Any other comments?</p>
-            <textarea id="q4" name="q4" placeholder="Your comments"></textarea><br>
-
-            <button type="submit">Submit Survey</button>
-        </form>
+        <h2 id="survey1-title"></h2>
+        <p id="already-submitted" style="color: red; display:none;">You have already submitted this survey!</p>
+        <form id="survey1-form"></form>
     </div>
 
     <!-- Survey Section for Survey 2 -->
     <div id="survey2-section" style="display:none;">
-        <h2>Survey 2</h2>
+        <h2 id="survey2-title"></h2>
         <p id="already-submitted2" style="color: red; display:none;">You have already submitted this survey!</p>
-        <form id="survey2-form">
-            <p>1. What is your favorite product feature?</p>
-            <input type="radio" id="q1_1" name="q1" value="Feature A"> Feature A<br>
-            <input type="radio" id="q1_2" name="q1" value="Feature B"> Feature B<br>
-            <input type="radio" id="q1_3" name="q1" value="Feature C"> Feature C<br>
-            <input type="radio" id="q1_4" name="q1" value="Feature D"> Feature D<br>
-            
-            <p>2. How easy is it to navigate our website?</p>
-            <input type="radio" id="q2_1" name="q2" value="Very Easy"> Very Easy<br>
-            <input type="radio" id="q2_2" name="q2" value="Easy"> Easy<br>
-            <input type="radio" id="q2_3" name="q2" value="Difficult"> Difficult<br>
-            <input type="radio" id="q2_4" name="q2" value="Very Difficult"> Very Difficult<br>
-
-            <p>3. What would you improve on our website?</p>
-            <input type="text" id="q3" name="q3" placeholder="Your suggestions">
-
-            <p>4. Any other feedback?</p>
-            <textarea id="q4" name="q4" placeholder="Your feedback"></textarea><br>
-
-            <button type="submit">Submit Survey</button>
-        </form>
+        <form id="survey2-form"></form>
     </div>
 
     <script src="app.js"></script>
