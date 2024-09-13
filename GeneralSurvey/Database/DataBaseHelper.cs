@@ -98,6 +98,21 @@ namespace GeneralSurvey.Database
             return users;
         }
 
+        public Survey GetSurveyById(int id)
+        {
+            var query = $"SELECT * FROM Survey WHERE id = {id}";
+            var reader = ExecuteQuery(query);
+            reader.Read();
+
+            var survey = new Survey
+            {
+                Id = reader.GetInt32(0),
+                Title = reader.GetString(1)
+            };
+
+            return survey;
+        }
+
         public void CloseConnection()
         {
             _connection?.Close();

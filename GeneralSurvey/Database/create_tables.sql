@@ -1,10 +1,11 @@
-DROP TABLE USER;
-DROP TABLE SURVEY;
-DROP TABLE QUESTION;
-DROP TABLE QUESTION_CHOICE;
-DROP TABLE SURVEY_QUESTION;
-DROP TABLE SURVEY_USER;
-DROP TABLE ANSWER;
+DROP TABLE IF EXISTS USER;
+DROP TABLE IF EXISTS SURVEY;
+DROP TABLE IF EXISTS QUESTION;
+DROP TABLE IF EXISTS CHOICE;
+DROP TABLE IF EXISTS QUESTION_CHOICE;
+DROP TABLE IF EXISTS SURVEY_QUESTION;
+DROP TABLE IF EXISTS SURVEY_USER;
+DROP TABLE IF EXISTS ANSWER;
  
 CREATE TABLE USER (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,24 +20,17 @@ CREATE TABLE SURVEY (
 
 CREATE TABLE QUESTION (
     id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    title CHAR(50)
+    title CHAR(50),
+    id_survey INTEGER NOT NULL, 
+    FOREIGN KEY(id_survey)
+        REFERENCES SURVEY (id)
 );
 
-CREATE TABLE QUESTION_CHOICE (
+CREATE TABLE CHOICE (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    letter_response CHAR(50),
+    letter CHAR(50),
     id_question INTEGER NOT NULL,
     response CHAR(50) NOT NULL,
-    FOREIGN KEY(id_question)
-        REFERENCES QUESTION (id)
-);
-
-CREATE TABLE SURVEY_QUESTION (
-    id INTEGER PRIMARY KEY AUTOINCREMENT, 
-    id_survey INTEGER NOT NULL, 
-    id_question INTEGER NOT NULL,
-    FOREIGN KEY(id_survey) 
-        REFERENCES SURVEY (id),
     FOREIGN KEY(id_question)
         REFERENCES QUESTION (id)
 );
@@ -57,42 +51,70 @@ CREATE TABLE ANSWER (
     id_choice INTEGER,
     answer_date CHAR(50),
     FOREIGN KEY(id_choice) 
-        REFERENCES QUESTION_CHOICE (id)
+        REFERENCES CHOICE (id)
 );
 
--- INSERT INTO USER (username, password) 
--- VALUES ('alice', 'password1'),
---        ('bob', 'password2'),
---        ('charlie', 'password3');
+INSERT INTO USER (id, username, password) 
+VALUES (1, 'alice', 'password1'),
+       (2, 'bob', 'password2'),
+       (3, 'charlie', 'password3');
 
--- -- Insertion d'un sondage sans spécifier l'ID
--- INSERT INTO SURVEY (title) 
--- VALUES ('Sondage 1'),
---        ('Sondage 2');
+INSERT INTO SURVEY (id, title)
+VALUES (1000, 'Sondage 1'),
+       (2000, 'Sondage 2');
 
--- -- Insertion de questions
--- INSERT INTO QUESTION (title) 
--- VALUES ('How satisfied are you with our product?'),
---        ('Would you recommend us to others?');
+INSERT INTO QUESTION (id, title, id_survey) 
+VALUES (0100, 'À quelle tranche d''âge appartenez-vous?', 1000),
+       (0200, 'Êtes-vous une femme ou un homme?', 1000),
+       (0300, 'Quel journal lisez-vous à la maison?', 1000),
+       (0400, 'Combien de temps accordez-vous à la lecture de votre journal quotidiennement?', 1000),
+       (0500, 'À quelle tranche d''âge appartenez-vous?', 2000),
+       (0600, 'Êtes-vous une femme ou un homme?', 2000),
+       (0700, 'Combien de tasses de café buvez-vous chaque jour?', 2000),
+       (0800, 'Combien de consommations alcoolisées buvez-vous chaque jour?', 2000);
 
--- -- Insertion de choix de réponse pour les questions
--- INSERT INTO QUESTION_CHOICE (letter_response, id_question, response) 
--- VALUES ('A', 1, 'Very Satisfied'),   -- Réponse pour la question 1
---        ('B', 1, 'Satisfied'),
---        ('C', 1, 'Neutral'),
---        ('D', 1, 'Dissatisfied'),
---        ('A', 2, 'Yes'),              -- Réponse pour la question 2
---        ('B', 2, 'No');
+INSERT INTO CHOICE (id, letter, id_question, response) 
+VALUES (0001, 'A', 0100, '0-25 ans'),                     -- Réponse pour la question 0100
+       (0002, 'B', 0100, '25-50 ans'),
+       (0003, 'C', 0100, '50-75 ans'),
+       (0004, 'D', 0100, '75 ans et plus'),
 
--- -- Associer des questions à un sondage
--- INSERT INTO SURVEY_QUESTION (id_survey, id_question) 
--- VALUES (1, 1),  -- Question 1 pour le sondage 1
---        (1, 2);  -- Question 2 pour le sondage 1
+       (0005, 'A', 0200, 'Femme'),                        -- Réponse pour la question 0200
+       (0006, 'B', 0200, 'Homme'),
+       (0007, 'C', 0200, 'Je ne veux pas répondre'),
 
--- -- Associer des utilisateurs à des sondages
--- INSERT INTO SURVEY_USER (id_user, id_survey, is_filled) 
--- VALUES (1, 1, 1),  -- L'utilisateur 1 a rempli le sondage 1
---        (2, 1, 0);  -- L'utilisateur 2 n'a pas rempli le sondage 1
+       (0008, 'A', 0300, 'La Presse'),                    -- Réponse pour la question 0300
+       (0009, 'B', 0300, 'Le Journal de Montréal'),
+       (0010, 'C', 0300, 'The Gazette'),
+       (0011, 'D', 0300, 'Le Devoir'),
+
+       (0012, 'A', 0400, 'Moins de 10 minutes'),          -- Réponse pour la question 0400
+       (0013, 'B', 0400, 'Entre 10 et 30 minutes'),
+       (0014, 'C', 0400, 'Entre 30 et 60 minutes'),
+       (0015, 'D', 0400, '60 minutes ou plus'),
+
+       (0016, 'A', 0500, '0-25 ans'),                     -- Réponse pour la question 0500
+       (0017, 'B', 0500, '25-50 ans'),
+       (0018, 'C', 0500, '50-75 ans'),
+       (0019, 'D', 0500, '75 ans et plus'),
+
+       (0020, 'A', 0600, 'Femme'),                        -- Réponse pour la question 0600
+       (0021, 'B', 0600, 'Homme'),
+       (0022, 'C', 0600, 'Je ne veux pas répondre'),
+
+       (0023, 'A', 0700, 'Je ne bois pas de café'),       -- Réponse pour la question 0700
+       (0024, 'B', 0700, 'Entre 1 et 5 tasses'),
+       (0025, 'C', 0700, 'Entre 6 et 10 tasses'),
+       (0026, 'D', 0700, '10 tasses ou plus'),
+
+       (0027, 'A', 0800, '0'),                            -- Réponse pour la question 0800
+       (0028, 'B', 0800, '1'),
+       (0029, 'C', 0800, '2'),
+       (0030, 'D', 0800, '3 ou plus');
+
+INSERT INTO SURVEY_USER (id, id_user, id_survey, is_filled) 
+VALUES (10000, 1, 1000, 1),  -- L'utilisateur 1 a rempli le sondage 1
+       (20000, 2, 1000, 0);  -- L'utilisateur 2 n'a pas rempli le sondage 1
 
 -- -- Insertion de réponses données par des utilisateurs
 -- INSERT INTO ANSWER (id_choice, answer_date) 
