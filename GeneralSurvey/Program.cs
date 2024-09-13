@@ -1,7 +1,7 @@
 using GeneralSurvey.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseUrls("http://localhost:5244");
+//builder.WebHost.UseUrls("http://localhost:5244");
 
 // Add services to the container.
 builder.Services.AddSingleton<IFormResponseService, FormResponseService>();
