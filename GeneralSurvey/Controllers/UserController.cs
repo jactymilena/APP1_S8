@@ -1,28 +1,57 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GeneralSurvey.Helpers;
+using GeneralSurvey.Models;
+using GeneralSurvey.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GeneralSurvey.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("user/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger;
+        private IUserService _userService;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(IUserService userService)
         {
-            _logger = logger;
+            _userService = userService;
         }
 
-        [HttpGet(Name = "GetUser")]
-        public IEnumerable<User> Get()
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody] AuthentificationRequest model)
         {
-            return Enumerable.Range(1, 5).Select(index => new User
-            {
-                Name = "User" + index,
-                Email = "user" + index + "@gmail.com",
-                Password = "password" + index
-            })
-            .ToArray();
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(response);
         }
+
+        [HttpPost("register")]
+        [Authorize]
+        public IActionResult Register([FromBody] User user)
+        {
+            _userService.AddUser(user);
+
+/*            if (response == null)
+                return BadRequest(new { message = "Username or email is already taken" });*/
+
+            return Ok();
+        }
+
+/*        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Update(int id, [FromBody] User user)
+        {
+            if (id != user.Id)
+                return BadRequest(new { message = "Id is incorrect" });
+
+            var response = await _userService.AddAndUdateUser(user);
+
+            if (response == null)
+                return BadRequest(new { message = "Username or email is already taken" });
+
+            return Ok(response);
+        }*/
     }
 }
