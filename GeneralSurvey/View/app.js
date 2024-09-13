@@ -26,29 +26,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+/*CHOICE section*/
 // choix de selection of Survey 1
-document.getElementById('survey1-button').addEventListener('click', function() {
-    document.getElementById('survey1-section').style.display = 'block';
-});
+// document.getElementById('survey1-button').addEventListener('click', function() {
+//     document.getElementById('survey1-section').style.display = 'block';
+// });
 
-// choix the selection of Survey 2
-document.getElementById('survey2-button').addEventListener('click', function() {
-    document.getElementById('survey2-section').style.display = 'block';
-});
+// // choix the selection of Survey 2
+// document.getElementById('survey2-button').addEventListener('click', function() {
+//     document.getElementById('survey2-section').style.display = 'block';
+// });
 
-// Event for choose wich survey
-document.addEventListener('DOMContentLoaded', () => {
-    const survey1Button = document.getElementById('survey1-button');
-    const survey2Button = document.getElementById('survey2-button');
+/*CHOICE section*/
+// document.addEventListener('DOMContentLoaded', () => {
+//     const survey1Button = document.getElementById('survey1-button');
+//     const survey2Button = document.getElementById('survey2-button');
 
-    survey1Button.addEventListener('click', () => {
-        window.location.href = 'survey.html?survey=1'; // Redirige vers survey.html avec le paramètre survey=1
-    });
+//     survey1Button.addEventListener('click', () => {
+//         window.location.href = 'survey.html?survey=1'; // Redirige vers survey.html avec le paramètre survey=1
+//     });
 
-    survey2Button.addEventListener('click', () => {
-        window.location.href = 'survey.html?survey=2'; // Redirige vers survey.html avec le paramètre survey=2
-    });
-});
+//     survey2Button.addEventListener('click', () => {
+//         window.location.href = 'survey.html?survey=2'; // Redirige vers survey.html avec le paramètre survey=2
+//     });
+// });
 
 // // Check if the user has already submitted the selected survey
 // //**TODO: regarder si isActive est a true ou a false**
