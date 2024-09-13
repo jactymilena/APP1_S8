@@ -1,4 +1,5 @@
 ﻿using GeneralSurvey.Models;
+using GeneralSurvey.Database;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,53 +11,46 @@ namespace GeneralSurvey.Services
 {
     public class UserService : IUserService
     {
-        private readonly SurveyDbContext _db;
-        private readonly AppSettings _appSettings;
+        private DataBaseHelper _db;
+        private AppSettings _appSettings;
 
-        public UserService(SurveyDbContext context, IOptions<AppSettings> appSettings)
+        public UserService(DataBaseHelper db, IOptions<AppSettings> appSettings)
         {
-            _db = context;
+            _db = db;
             _appSettings = appSettings.Value;
         }
 
-        public async Task<AuthentificationResponse?> Authenticate(AuthentificationRequest model)
+        public AuthentificationResponse? Authenticate(AuthentificationRequest model)
         {
-            var user = await _db.Users.SingleOrDefaultAsync(x => x.Username == model.Username && x.Password == model.Password);
-
-            if (user == null) return null;
-
-            var token = generateJwtToken(user);
-
-            return new AuthentificationResponse(user, token);
-        }
-
-        public async Task<IEnumerable<User>> GetAll()
-        {
-            return await _db.Users.ToListAsync();
-        }
-
-        public async Task<User?> GetById(int id)
-        {
-            return await _db.Users.FindAsync(id);
-        }
-
-        public async Task<User?> AddAndUdateUser(User user)
-        {
-            if (user.Id == 0)
+            var users = _db.GetAllUsers();
+            if (users != null)
             {
-                await _db.Users.AddAsync(user);
+                var user = users.Find(x => x.Username == model.Username && x.Password == model.Password);
+                if (user == null) return null;
+                var token = GenerateJwtToken(user);
+                
+                return new AuthentificationResponse(user, token);
             }
-            else
-            {
-                _db.Users.Update(user);
-            }
-
-            await _db.SaveChangesAsync();
-
-            return user;
+            
+            return null;
         }
 
-        private string generateJwtToken(User user)
+        public List<User> GetAll()
+        {
+            return _db.GetAllUsers();
+        }
+
+        public User GetById(int id)
+        {
+            return _db.GetUserByID(id);
+        }
+
+        public void AddUser(User user)
+        {
+            _db.PostUser(user);
+        }
+
+        private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);

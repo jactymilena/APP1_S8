@@ -17,9 +17,9 @@ namespace GeneralSurvey.Controllers
         }
 
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] AuthentificationRequest model)
+        public IActionResult Authenticate([FromBody] AuthentificationRequest model)
         {
-            var response = await _userService.Authenticate(model);
+            var response = _userService.Authenticate(model);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -29,17 +29,17 @@ namespace GeneralSurvey.Controllers
 
         [HttpPost("register")]
         [Authorize]
-        public async Task<IActionResult> Register([FromBody] User user)
+        public IActionResult Register([FromBody] User user)
         {
-            var response = await _userService.AddAndUdateUser(user);
+            _userService.AddUser(user);
 
-            if (response == null)
-                return BadRequest(new { message = "Username or email is already taken" });
+/*            if (response == null)
+                return BadRequest(new { message = "Username or email is already taken" });*/
 
-            return Ok(response);
+            return Ok();
         }
 
-        [HttpPut("{id}")]
+/*        [HttpPut("{id}")]
         [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] User user)
         {
@@ -52,6 +52,6 @@ namespace GeneralSurvey.Controllers
                 return BadRequest(new { message = "Username or email is already taken" });
 
             return Ok(response);
-        }
+        }*/
     }
 }

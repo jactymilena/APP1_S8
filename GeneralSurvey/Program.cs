@@ -1,18 +1,25 @@
+using GeneralSurvey;
+using GeneralSurvey.Database;
 using GeneralSurvey.Models;
 using GeneralSurvey.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 //builder.WebHost.UseUrls("http://localhost:5244");
 
-// Add services to the container.
-builder.Services.AddSingleton<IFormResponseService, FormResponseService>();
+// string connectionString = builder.Configuration.GetConnectionString("SurveyConnectionString");
 
+// builder.Services.AddDbContext<SurveyDbContext>(options => options.UseSqlServer(connectionString));
+
+// Add services to the container.
+// builder.Services.AddSingleton<IFormResponseService, FormResponseService>();
+builder.Services.AddSingleton<DataBaseHelper>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
@@ -43,6 +50,10 @@ builder.Services.AddSwaggerGen(swagger =>
 });
 
 var app = builder.Build();
+
+var db = app.Services.GetRequiredService<DataBaseHelper>();
+db.CreateTables();
+// db.PostUser(new User() { Username = "admin", Password = "admin" });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
