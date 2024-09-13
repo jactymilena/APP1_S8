@@ -45,7 +45,7 @@ CREATE TABLE SURVEY_USER (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_user INTEGER,
     id_survey INTEGER,
-    is_filled INTEGER,
+    is_filled INTEGER DEFAULT 0,
     FOREIGN KEY(id_user) 
         REFERENCES USER (id),
     FOREIGN KEY(id_survey) 
