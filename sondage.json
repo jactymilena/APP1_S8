@@ -1,0 +1,80 @@
+{
+    "Sondage_1": {
+      "questions": [
+        {
+          "question": "À quelle tranche d'âge appartenez-vous?",
+          "options": {
+            "a": "0-25 ans",
+            "b": "25-50 ans",
+            "c": "50-75 ans",
+            "d": "75 ans et plus"
+          }
+        },
+        {
+          "question": "Êtes-vous une femme ou un homme?",
+          "options": {
+            "a": "Femme",
+            "b": "Homme",
+            "c": "Je ne veux pas répondre"
+          }
+        },
+        {
+          "question": "Quel journal lisez-vous à la maison?",
+          "options": {
+            "a": "La Presse",
+            "b": "Le Journal de Montréal",
+            "c": "The Gazette",
+            "d": "Le Devoir"
+          }
+        },
+        {
+          "question": "Combien de temps accordez-vous à la lecture de votre journal quotidiennement?",
+          "options": {
+            "a": "Moins de 10 minutes",
+            "b": "Entre 10 et 30 minutes",
+            "c": "Entre 30 et 60 minutes",
+            "d": "60 minutes ou plus"
+          }
+        }
+      ]
+    },
+    "Sondage_2": {
+      "questions": [
+        {
+          "question": "À quelle tranche d'âge appartenez-vous?",
+          "options": {
+            "a": "0-25 ans",
+            "b": "25-50 ans",
+            "c": "50-75 ans",
+            "d": "75 ans et plus"
+          }
+        },
+        {
+          "question": "Êtes-vous une femme ou un homme?",
+          "options": {
+            "a": "Femme",
+            "b": "Homme",
+            "c": "Je ne veux pas répondre"
+          }
+        },
+        {
+          "question": "Combien de tasses de café buvez-vous chaque jour?",
+          "options": {
+            "a": "Je ne bois pas de café",
+            "b": "Entre 1 et 5 tasses",
+            "c": "Entre 6 et 10 tasses",
+            "d": "10 tasses ou plus"
+          }
+        },
+        {
+          "question": "Combien de consommations alcoolisées buvez-vous chaque jour?",
+          "options": {
+            "a": "0",
+            "b": "1",
+            "c": "2 ou 3",
+            "d": "3 ou plus"
+          }
+        }
+      ]
+    }
+  }  
