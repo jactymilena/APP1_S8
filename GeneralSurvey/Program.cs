@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddDbContext<SurveyDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
-// builder.Services.AddSingleton<IFormResponseService, FormResponseService>();
+builder.Services.AddSingleton<ISurveyService, SurveyService>();
 builder.Services.AddSingleton<DataBaseHelper>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<IUserService, UserService>();
