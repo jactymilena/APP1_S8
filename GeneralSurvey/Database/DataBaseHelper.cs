@@ -6,7 +6,9 @@ namespace GeneralSurvey.Database
     public class DataBaseHelper
     {
         private SQLiteConnection? _connection;   
-        public string ConnectionString { get; set; } = "Data Source=GeneralSurvey.db;Version=3;";
+        //public string ConnectionString { get; set; } = "Data Source=GeneralSurvey.db;Version=3;";
+        public string ConnectionString { get; set; } = "Data Source=Database/database.db;Version=3;";
+
 
         public DataBaseHelper()
         {
@@ -23,11 +25,11 @@ namespace GeneralSurvey.Database
         public void CreateTables()
         {
             // ExecuteQuery("DROP TABLE IF EXISTS User");
-            var userTable = @"CREATE TABLE IF NOT EXISTS User (
-                id INTEGER PRIMARY KEY NOT NULL,
-                username CHAR(50) NOT NULL, 
-                password CHAR(50) NOT NULL 
-            )";
+            //var userTable = @"CREATE TABLE IF NOT EXISTS User (
+            //    id INTEGER PRIMARY KEY NOT NULL,
+            //    username CHAR(50) NOT NULL, 
+            //    password CHAR(50) NOT NULL 
+            //)";
             
             /*ExecuteQuery("DROP TABLE IF EXISTS Survey");
             var surveyTable = @"CREATE TABLE Survey (
@@ -41,7 +43,7 @@ namespace GeneralSurvey.Database
                 title CHAR(50)
             );";*/
 
-            ExecuteQuery(userTable);
+            //ExecuteQuery(userTable);
             // ExecuteQuery(surveyTable);
             // ExecuteQuery(questionTable);
         }
@@ -100,7 +102,7 @@ namespace GeneralSurvey.Database
 
         public Survey GetSurveyById(int id)
         {
-            var query = $"SELECT * FROM Survey WHERE id = {id}";
+            var query = $"SELECT * FROM SURVEY WHERE id = {id}";
             var reader = ExecuteQuery(query);
             reader.Read();
 
@@ -110,8 +112,64 @@ namespace GeneralSurvey.Database
                 Title = reader.GetString(1)
             };
 
+            var questions = GetQuestionsBySurveyId(survey.Id);
+            var choices = new List<Choice>();
+
+            for (int i = 0; i < questions.Count; i++)
+            {
+                var choicesToAdd = GetChoicesByQuestionId(questions.ToList()[i].Id);
+                questions.ToList()[i].Choices = choicesToAdd;
+            }
+
+            survey.Questions = questions;
+
             return survey;
         }
+
+        public ICollection<Question> GetQuestionsBySurveyId(int surveyId)
+        {
+            var query = $"SELECT * FROM QUESTION WHERE id_survey = {surveyId}";
+            var reader = ExecuteQuery(query);
+
+            var questions = new List<Question>();
+
+            while (reader.Read())
+            {
+                var question = new Question
+                {
+                    Id = reader.GetInt32(0),
+                    Title = reader.GetString(1),
+                    IdSurvey = reader.GetInt32(2)
+                };
+                questions.Add(question);
+            }
+
+            return questions;
+        }
+
+        public ICollection<Choice> GetChoicesByQuestionId(int questionId)
+        {
+            var query = $"SELECT * FROM CHOICE WHERE id_question = {questionId}";
+            var reader = ExecuteQuery(query);
+
+            var choices = new List<Choice>();
+
+            while (reader.Read())
+            {
+                var choice = new Choice
+                {
+                    Id = reader.GetInt32(0),
+                    Letter = reader.GetString(1),
+                    IdQuestion = reader.GetInt32(2),
+                    Response = reader.GetString(3)
+                };
+                choices.Add(choice);
+            }
+
+            return choices;
+        }
+
+
 
         public void CloseConnection()
         {
