@@ -105,12 +105,13 @@ namespace GeneralSurvey.Database
         {
             foreach (var answer in answers)
             {
-                var query = "INSERT INTO ANSWER (Id, Id_Choice, Answer_Date) VALUES (@Id, @IdChoice, @AnswerDate)";
+                var query = "INSERT INTO ANSWER (Id, Id_Choice, Id_Survey, Answer_Date) VALUES (@Id, @IdChoice, @IdSurvey, @AnswerDate)";
 
                 using var cmd = new SQLiteCommand(query, _connection);
 
                 cmd.Parameters.AddWithValue("@Id", (object)answer.Id ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@IdChoice", answer.IdChoice ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@IdSurvey", answer.IdSurvey ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@AnswerDate", answer.AnswerDate ?? (object)DBNull.Value);
 
                 cmd.ExecuteNonQuery();
@@ -186,7 +187,27 @@ namespace GeneralSurvey.Database
             return choices;
         }
 
+        public List<Answer> GetAnwsersBySurveyId(int surveyId)
+        {
+            var query = $"SELECT * FROM ANSWER WHERE id_survey = {surveyId}";
+            var reader = ExecuteQuery(query);
 
+            var answers = new List<Answer>();
+
+            while (reader.Read())
+            {
+                var answer = new Answer
+                {
+                    Id = reader.GetInt32(0),
+                    IdChoice = reader.GetInt32(1),
+                    IdSurvey = reader.GetInt32(2),
+                    AnswerDate = reader.GetDateTime(3)
+                };
+                answers.Add(answer);
+            }
+
+            return answers;
+        }
 
         public void CloseConnection()
         {

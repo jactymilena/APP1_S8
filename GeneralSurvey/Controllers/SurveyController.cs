@@ -17,8 +17,8 @@ namespace GeneralSurvey.Controllers
             _surveyService = surveyService;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("GetSurvey/{id}")]
+        public IActionResult GetSurvey(int id)
         {
             var survey = _surveyService.GetSurvey(id);
             if (survey == null)
@@ -26,6 +26,17 @@ namespace GeneralSurvey.Controllers
                 return NotFound();
             }
             return Ok(survey);
+        }
+
+        [HttpGet("GetAnswers/{id}")]
+        public IActionResult GetAnswers(int id)
+        {
+            var answer = _surveyService.GetAllAnswersBySurveyId(id);
+            if (answer == null)
+            {
+                return NotFound();
+            }
+            return Ok(answer);
         }
 
         [HttpPost("Post")]

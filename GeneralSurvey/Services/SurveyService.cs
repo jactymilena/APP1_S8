@@ -16,8 +16,12 @@ namespace GeneralSurvey.Services
 
         public Survey GetSurvey(int id)
         {
-            // Appeler la méthode GetSurveyById de DataBaseHelper
             return _dataBaseHelper.GetSurveyById(id);
+        }
+
+        public List<Answer> GetAllAnswersBySurveyId(int id)
+        {
+            return _dataBaseHelper.GetAnwsersBySurveyId(id);
         }
 
         public void AddAnswers(List<Answer> answers)
