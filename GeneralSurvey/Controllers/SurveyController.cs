@@ -1,4 +1,5 @@
-﻿using GeneralSurvey.Models;
+﻿using GeneralSurvey.Database;
+using GeneralSurvey.Models;
 using GeneralSurvey.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,21 +28,15 @@ namespace GeneralSurvey.Controllers
             return Ok(survey);
         }
 
-        //[HttpPost]
-        //public IActionResult Post([FromBody] UpdateFormResponse obj)
-        //{
-        //    var formResponse = _surveyService.AddFormResponse(obj);
-
-        //    if (formResponse == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    return Ok(new
-        //    {
-        //        message = "Form Response created!",
-        //        id = formResponse!.Id
-        //    });
-        //}
+        [HttpPost("Post")]
+        public IActionResult Post([FromBody] List<Answer> answers)
+        {
+            if (answers == null || !answers.Any())
+            {
+                return BadRequest("No answers provided.");
+            }
+            _surveyService.AddAnswers(answers);
+            return Ok();
+        }
     }
 }

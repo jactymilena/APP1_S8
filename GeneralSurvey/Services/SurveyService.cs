@@ -20,9 +20,10 @@ namespace GeneralSurvey.Services
             return _dataBaseHelper.GetSurveyById(id);
         }
 
-        public Answer AddFormAnswer(Answer obj)
+        public void AddAnswers(List<Answer> answers)
         {
-            throw new NotImplementedException();
+            _dataBaseHelper.PostAnswers(answers);
+            // is filled à true
         }
 
         //List<FormResponse> ISurveyService.GetAllFormResponse()

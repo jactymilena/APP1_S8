@@ -1,5 +1,6 @@
 ﻿using GeneralSurvey.Models;
 using System.Data.SQLite;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace GeneralSurvey.Database
 {
@@ -98,6 +99,22 @@ namespace GeneralSurvey.Database
             }
 
             return users;
+        }
+
+        public void PostAnswers(ICollection<Answer> answers)
+        {
+            foreach (var answer in answers)
+            {
+                var query = "INSERT INTO ANSWER (Id, Id_Choice, Answer_Date) VALUES (@Id, @IdChoice, @AnswerDate)";
+
+                using var cmd = new SQLiteCommand(query, _connection);
+
+                cmd.Parameters.AddWithValue("@Id", (object)answer.Id ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@IdChoice", answer.IdChoice ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@AnswerDate", answer.AnswerDate ?? (object)DBNull.Value);
+
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public Survey GetSurveyById(int id)
