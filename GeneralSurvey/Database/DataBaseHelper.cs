@@ -9,7 +9,6 @@ namespace GeneralSurvey.Database
         private SQLiteConnection? _connection;   
         public string ConnectionString { get; set; } = "Data Source=Database/GeneralSurvey.db;Version=3;";
 
-
         public DataBaseHelper()
         {
             CreateDataBase();
@@ -174,16 +173,21 @@ namespace GeneralSurvey.Database
             return reader.HasRows;
         }
 
-        public Survey GetSurveyById(int id)
+        public Survey? GetSurveyById(int id)
         {
             var query = $"SELECT * FROM SURVEY WHERE id = {id}";
             var reader = ExecuteQuery(query);
+
+            if (!reader.HasRows)
+                return null;
+
             reader.Read();
 
             var survey = new Survey
             {
                 Id = reader.GetInt32(0),
                 Title = reader.GetString(1)
+
             };
 
             var questions = GetQuestionsBySurveyId(survey.Id);
@@ -206,13 +210,16 @@ namespace GeneralSurvey.Database
 
             var questions = new List<Question>();
 
+            if (!reader.HasRows)
+                return questions;
+
+
             while (reader.Read())
             {
                 var question = new Question
                 {
                     Id = reader.GetInt32(0),
                     Title = reader.GetString(1),
-                    IdSurvey = reader.GetInt32(2)
                 };
                 questions.Add(question);
             }
@@ -233,7 +240,6 @@ namespace GeneralSurvey.Database
                 {
                     Id = reader.GetInt32(0),
                     Letter = reader.GetString(1),
-                    IdQuestion = reader.GetInt32(2),
                     Response = reader.GetString(3)
                 };
                 choices.Add(choice);
