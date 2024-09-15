@@ -18,7 +18,6 @@ namespace GeneralSurvey
                 {
                     Id = 1,
                     Username = "System",
-                    Email = "System",
                     Password = "System",
                 });
         }

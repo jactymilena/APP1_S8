@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\UesrComponent.cs" />
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="WeatherForecast.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +17,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.118" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Database\NewFolder\" />
   </ItemGroup>
 
 </Project>

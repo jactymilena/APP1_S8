@@ -41,28 +41,34 @@ namespace GeneralSurvey.Controllers
 
         [HttpPost("AnswerSurvey")]
         [Authorize]
-        public IActionResult Post([FromBody] UserAnswer userAnswer)
+        public IActionResult Post([FromBody] ICollection<Answer> answers)
         {
             HttpContext context = HttpContext;
             var user = (User?)context.Items["User"];
 
-            if (user != null && user.Id != userAnswer.IdUser)
+            if (user == null)
             {
-                return BadRequest("User id does not match the token.");
+                return BadRequest("Invalid token.");
             }
 
 
-            if (userAnswer == null || !userAnswer.Answers.Any())
+            if (answers == null || answers.Count == 0)
             {
                 return BadRequest("No answers provided.");
             }
+
+            UserAnswer userAnswer = new UserAnswer
+            {
+                UserId = user.Id,
+                Answers = answers
+            };
             
             if(_surveyService.RespondToSurvey(userAnswer))
             {
                 return Ok();
             }
 
-            return BadRequest("User already answered");
+            return BadRequest("User already answered to the survey.");
         }
     }
 }

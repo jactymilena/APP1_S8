@@ -6,11 +6,13 @@ DROP TABLE IF EXISTS QUESTION_CHOICE;
 DROP TABLE IF EXISTS SURVEY_QUESTION;
 DROP TABLE IF EXISTS SURVEY_USER;
 DROP TABLE IF EXISTS ANSWER;
+DROP TABLE IF EXISTS API_KEY;
  
 CREATE TABLE USER (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username CHAR(50) UNIQUE NOT NULL, 
-    password CHAR(50) NOT NULL 
+    username CHAR(50) NOT NULL, 
+    password CHAR(50) NOT NULL,
+    salt CHAR(50) NOT NULL 
 );
 
 CREATE TABLE SURVEY (
@@ -56,10 +58,19 @@ CREATE TABLE ANSWER (
         REFERENCES SURVEY (id)
 );
 
-INSERT INTO USER (username, password) 
-VALUES ('alice', 'password1'),
-       ('bob', 'password2'),
-       ('charlie', 'password3');
+CREATE TABLE API_KEY (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    key CHAR(50) NOT NULL,
+    id_user INTEGER,
+    FOREIGN KEY(id_user) 
+        REFERENCES USER (id)
+);
+
+INSERT INTO API_KEY (key) 
+VALUES ('638bb43e-35f4-479f-8dbe-6b77ced30c14'),
+       ('42a7f5ce-9446-4ddd-87b9-f4e4924c9c89'),
+       ('20d2c108-005d-40a4-b193-2d0f86fbc7e4'),
+       ('e5036a72-c232-41de-8a50-11ead9999ac7');
 
 INSERT INTO SURVEY (title)
 VALUES ('Sondage 1'),

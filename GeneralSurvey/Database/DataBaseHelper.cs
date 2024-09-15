@@ -1,6 +1,6 @@
 ﻿using GeneralSurvey.Models;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Data.SQLite;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace GeneralSurvey.Database
 {
@@ -32,7 +32,19 @@ namespace GeneralSurvey.Database
 
         public void PostUser(User user)
         {
-            var query = $"INSERT INTO User (username, password) VALUES ('{user.Username}', '{user.Password}')";
+            var query = $"INSERT INTO User (username, password, salt) VALUES ('{user.Username}', '{user.Password}', '{user.Salt}')";
+            ExecuteQuery(query);
+        }
+
+        public void PostAPIKey(Guid apiKey)
+        {
+            var query = $"INSERT INTO API_KEY (key) VALUES ('{apiKey}')";
+            ExecuteQuery(query);
+        }
+
+        public void PutAPIKey(int userId, Guid apiKey)
+        {
+            var query = $"UPDATE API_KEY SET id_user = '{userId}' WHERE key = '{apiKey}'";
             ExecuteQuery(query);
         }
 
@@ -74,6 +86,45 @@ namespace GeneralSurvey.Database
             return users;
         }
 
+        public bool VerifyAPIKey(Guid apiKey)
+        {
+            var query = $"SELECT key, id_user FROM API_KEY WHERE key = '{apiKey}'";
+            var reader = ExecuteQuery(query);
+
+            if (!reader.HasRows)
+            {
+                return false;
+            }
+
+            // Verify if the API key is already in use
+            reader.Read();
+
+            return reader[reader.GetOrdinal("id_user")] == DBNull.Value;
+        }
+
+        public List<User> GetUsersByUsername(string username)
+        {
+            var query = $"SELECT * FROM User WHERE username = '{username}'";
+            var reader = ExecuteQuery(query);
+
+            var users = new List<User>();
+
+            while (reader.Read())
+            {
+                var user = new User
+                {
+                    Id = reader.GetInt32(0),
+                    Username = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    Salt = reader.GetString(3)
+                };
+
+                users.Add(user);
+            }
+
+            return users;
+        }
+
         public void PostAnswers(ICollection<Answer> answers)
         {
             foreach (var answer in answers)
@@ -92,13 +143,13 @@ namespace GeneralSurvey.Database
         public bool PostUserAnswerSurvey(UserAnswer userAnswer)
         {
             int id_survey = userAnswer.Answers.ToList()[0].IdSurvey;
-            if (CheckUserAnsweredSurvey(id_survey, userAnswer.IdUser))
+            if (CheckUserAnsweredSurvey(id_survey, userAnswer.UserId))
             {
                 return false;
             }
 
             PostAnswers(userAnswer.Answers);
-            PostUserSurvey(userAnswer.Answers.ToList()[0].IdSurvey, userAnswer.IdUser);
+            PostUserSurvey(userAnswer.Answers.ToList()[0].IdSurvey, userAnswer.UserId);
 
             return true;
         }
@@ -136,7 +187,6 @@ namespace GeneralSurvey.Database
             };
 
             var questions = GetQuestionsBySurveyId(survey.Id);
-            var choices = new List<Choice>();
 
             for (int i = 0; i < questions.Count; i++)
             {

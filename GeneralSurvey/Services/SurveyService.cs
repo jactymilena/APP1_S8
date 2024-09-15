@@ -1,7 +1,5 @@
 ﻿using GeneralSurvey.Database;
 using GeneralSurvey.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Data.Entity;
 
 namespace GeneralSurvey.Services
 {
