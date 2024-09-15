@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS ANSWER;
  
 CREATE TABLE USER (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username CHAR(50) NOT NULL, 
+    username CHAR(50) UNIQUE NOT NULL, 
     password CHAR(50) NOT NULL 
 );
 
@@ -37,8 +37,8 @@ CREATE TABLE CHOICE (
 
 CREATE TABLE SURVEY_USER (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_user INTEGER,
-    id_survey INTEGER,
+    id_user INTEGER NOT NULL,
+    id_survey INTEGER NOT NULL,
     is_filled INTEGER DEFAULT 0,
     FOREIGN KEY(id_user) 
         REFERENCES USER (id),
@@ -48,76 +48,76 @@ CREATE TABLE SURVEY_USER (
 
 CREATE TABLE ANSWER (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_choice INTEGER,
-    id_survey INTEGER,
-    answer_date CHAR(50),
+    id_choice INTEGER NOT NULL,
+    id_survey INTEGER NOT NULL,
+    answer_date DATE DEFAULT CURRENT_DATE,
     FOREIGN KEY(id_choice) 
         REFERENCES CHOICE (id),
     FOREIGN KEY(id_survey) 
         REFERENCES SURVEY (id)
 );
 
-INSERT INTO USER (id, username, password) 
-VALUES (1, 'alice', 'password1'),
-       (2, 'bob', 'password2'),
-       (3, 'charlie', 'password3');
+INSERT INTO USER (username, password) 
+VALUES ('alice', 'password1'),
+       ('bob', 'password2'),
+       ('charlie', 'password3');
 
-INSERT INTO SURVEY (id, title)
-VALUES (1, 'Sondage 1'),
-       (2, 'Sondage 2');
+INSERT INTO SURVEY (title)
+VALUES ('Sondage 1'),
+       ('Sondage 2');
 
-INSERT INTO QUESTION (id, title, id_survey) 
-VALUES (1, 'À quelle tranche d''âge appartenez-vous?', 1000),
-       (2, 'Êtes-vous une femme ou un homme?', 1000),
-       (3, 'Quel journal lisez-vous à la maison?', 1000),
-       (4, 'Combien de temps accordez-vous à la lecture de votre journal quotidiennement?', 1000),
-       (5, 'À quelle tranche d''âge appartenez-vous?', 2000),
-       (6, 'Êtes-vous une femme ou un homme?', 2000),
-       (7, 'Combien de tasses de café buvez-vous chaque jour?', 2000),
-       (8, 'Combien de consommations alcoolisées buvez-vous chaque jour?', 2000);
+INSERT INTO QUESTION (title, id_survey) 
+VALUES ('À quelle tranche d''âge appartenez-vous?', 1000),
+       ('Êtes-vous une femme ou un homme?', 1000),
+       ('Quel journal lisez-vous à la maison?', 1000),
+       ('Combien de temps accordez-vous à la lecture de votre journal quotidiennement?', 1000),
+       ('À quelle tranche d''âge appartenez-vous?', 2000),
+       ('Êtes-vous une femme ou un homme?', 2000),
+       ('Combien de tasses de café buvez-vous chaque jour?', 2000),
+       ('Combien de consommations alcoolisées buvez-vous chaque jour?', 2000);
 
-INSERT INTO CHOICE (id, letter, id_question, response) 
-VALUES (0001, 'A', 0100, '0-25 ans'),                     -- Réponse pour la question 0100
-       (0002, 'B', 0100, '25-50 ans'),
-       (0003, 'C', 0100, '50-75 ans'),
-       (0004, 'D', 0100, '75 ans et plus'),
+INSERT INTO CHOICE (letter, id_question, response) 
+VALUES ('A', 1, '0-25 ans'),                     -- Réponse pour la question 0100
+       ('B', 1, '25-50 ans'),
+       ('C', 1, '50-75 ans'),
+       ('D', 1, '75 ans et plus'),
 
-       (0005, 'A', 0200, 'Femme'),                        -- Réponse pour la question 0200
-       (0006, 'B', 0200, 'Homme'),
-       (0007, 'C', 0200, 'Je ne veux pas répondre'),
+       ('A', 2, 'Femme'),                        -- Réponse pour la question 0200
+       ('B', 2, 'Homme'),
+       ('C', 2, 'Je ne veux pas répondre'),
 
-       (0008, 'A', 0300, 'La Presse'),                    -- Réponse pour la question 0300
-       (0009, 'B', 0300, 'Le Journal de Montréal'),
-       (0010, 'C', 0300, 'The Gazette'),
-       (0011, 'D', 0300, 'Le Devoir'),
+       ('A', 3, 'La Presse'),                    -- Réponse pour la question 0300
+       ('B', 3, 'Le Journal de Montréal'),
+       ('C', 3, 'The Gazette'),
+       ('D', 3, 'Le Devoir'),
 
-       (0012, 'A', 0400, 'Moins de 10 minutes'),          -- Réponse pour la question 0400
-       (0013, 'B', 0400, 'Entre 10 et 30 minutes'),
-       (0014, 'C', 0400, 'Entre 30 et 60 minutes'),
-       (0015, 'D', 0400, '60 minutes ou plus'),
+       ('A', 4, 'Moins de 10 minutes'),          -- Réponse pour la question 0400
+       ('B', 4, 'Entre 10 et 30 minutes'),
+       ('C', 4, 'Entre 30 et 60 minutes'),
+       ('D', 4, '60 minutes ou plus'),
 
-       (0016, 'A', 0500, '0-25 ans'),                     -- Réponse pour la question 0500
-       (0017, 'B', 0500, '25-50 ans'),
-       (0018, 'C', 0500, '50-75 ans'),
-       (0019, 'D', 0500, '75 ans et plus'),
+       ('A', 5, '0-25 ans'),                     -- Réponse pour la question 0500
+       ('B', 5, '25-50 ans'),
+       ('C', 5, '50-75 ans'),
+       ('D', 5, '75 ans et plus'),
 
-       (0020, 'A', 0600, 'Femme'),                        -- Réponse pour la question 0600
-       (0021, 'B', 0600, 'Homme'),
-       (0022, 'C', 0600, 'Je ne veux pas répondre'),
+       ('A', 6, 'Femme'),                        -- Réponse pour la question 0600
+       ('B', 6, 'Homme'),
+       ('C', 6, 'Je ne veux pas répondre'),
 
-       (0023, 'A', 0700, 'Je ne bois pas de café'),       -- Réponse pour la question 0700
-       (0024, 'B', 0700, 'Entre 1 et 5 tasses'),
-       (0025, 'C', 0700, 'Entre 6 et 10 tasses'),
-       (0026, 'D', 0700, '10 tasses ou plus'),
+       ('A', 7, 'Je ne bois pas de café'),       -- Réponse pour la question 0700
+       ('B', 7, 'Entre 1 et 5 tasses'),
+       ('C', 7, 'Entre 6 et 10 tasses'),
+       ('D', 7, '10 tasses ou plus'),
 
-       (0027, 'A', 0800, '0'),                            -- Réponse pour la question 0800
-       (0028, 'B', 0800, '1'),
-       (0029, 'C', 0800, '2'),
-       (0030, 'D', 0800, '3 ou plus');
+       ('A', 8, '0'),                            -- Réponse pour la question 0800
+       ('B', 8, '1'),
+       ('C', 8, '2'),
+       ('D', 8, '3 ou plus');
 
-INSERT INTO SURVEY_USER (id, id_user, id_survey, is_filled) 
-VALUES (1, 1, 1000, 1),  -- L'utilisateur 1 a rempli le sondage 1
-       (2, 2, 1000, 0);  -- L'utilisateur 2 n'a pas rempli le sondage 1
+-- INSERT INTO SURVEY_USER (id_user, id_survey, is_filled) 
+-- VALUES (1, 1, 1),  -- L'utilisateur 1 a rempli le sondage 1
+--        (2, 1, 0);  -- L'utilisateur 2 n'a pas rempli le sondage 1
 
 -- -- Insertion de réponses données par des utilisateurs
 -- INSERT INTO ANSWER (id_choice, answer_date) 

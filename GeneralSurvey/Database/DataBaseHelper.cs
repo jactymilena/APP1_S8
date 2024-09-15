@@ -7,7 +7,6 @@ namespace GeneralSurvey.Database
     public class DataBaseHelper
     {
         private SQLiteConnection? _connection;   
-        //public string ConnectionString { get; set; } = "Data Source=GeneralSurvey.db;Version=3;";
         public string ConnectionString { get; set; } = "Data Source=Database/database.db;Version=3;";
 
 
