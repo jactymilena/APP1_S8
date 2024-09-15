@@ -1,9 +1,7 @@
-﻿using GeneralSurvey.Database;
+﻿using GeneralSurvey.Helpers;
 using GeneralSurvey.Models;
 using GeneralSurvey.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata;
 
 namespace GeneralSurvey.Controllers
 {
@@ -40,6 +38,7 @@ namespace GeneralSurvey.Controllers
         }
 
         [HttpPost("Post")]
+        [Authorize]
         public IActionResult Post([FromBody] UserAnswer userAnswer)
         {
             if (userAnswer == null || !userAnswer.Answers.Any())

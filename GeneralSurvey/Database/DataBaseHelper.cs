@@ -22,31 +22,6 @@ namespace GeneralSurvey.Database
             _connection.Open();
         }
 
-        public void CreateTables()
-        {
-            // ExecuteQuery("DROP TABLE IF EXISTS User");
-            //var userTable = @"CREATE TABLE IF NOT EXISTS User (
-            //    id INTEGER PRIMARY KEY NOT NULL,
-            //    username CHAR(50) NOT NULL, 
-            //    password CHAR(50) NOT NULL 
-            //)";
-            
-            /*ExecuteQuery("DROP TABLE IF EXISTS Survey");
-            var surveyTable = @"CREATE TABLE Survey (
-                id INTEGER PRIMARY KEY NOT NULL, 
-                title CHAR(50)
-            );";
-
-            ExecuteQuery("DROP TABLE IF EXISTS Question");
-            var questionTable = @"CREATE TABLE Question (
-                id INTEGER PRIMARY KEY NOT NULL, 
-                title CHAR(50)
-            );";*/
-
-            //ExecuteQuery(userTable);
-            // ExecuteQuery(surveyTable);
-            // ExecuteQuery(questionTable);
-        }
 
         public SQLiteDataReader ExecuteQuery(string query)
         {

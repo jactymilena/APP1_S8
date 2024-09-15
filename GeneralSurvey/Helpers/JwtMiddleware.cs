@@ -19,6 +19,7 @@ namespace GeneralSurvey.Helpers
             _next = next;
             _appSettings = appSettings.Value;
         }
+
         public async Task Invoke(HttpContext context, IUserService userService)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();

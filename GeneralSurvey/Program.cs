@@ -1,17 +1,11 @@
-using GeneralSurvey;
 using GeneralSurvey.Database;
+using GeneralSurvey.Helpers;
 using GeneralSurvey.Models;
 using GeneralSurvey.Services;
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.WebHost.UseUrls("http://localhost:5244");
-
-// string connectionString = builder.Configuration.GetConnectionString("SurveyConnectionString");
-
-// builder.Services.AddDbContext<SurveyDbContext>(options => options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddSingleton<ISurveyService, SurveyService>();
@@ -52,8 +46,6 @@ builder.Services.AddSwaggerGen(swagger =>
 var app = builder.Build();
 
 var db = app.Services.GetRequiredService<DataBaseHelper>();
-db.CreateTables();
-// db.PostUser(new User() { Username = "admin", Password = "admin" });
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -61,6 +53,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();
 
