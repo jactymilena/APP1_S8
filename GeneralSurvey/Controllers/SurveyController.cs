@@ -40,14 +40,19 @@ namespace GeneralSurvey.Controllers
         }
 
         [HttpPost("Post")]
-        public IActionResult Post([FromBody] List<Answer> answers)
+        public IActionResult Post([FromBody] UserAnswer userAnswer)
         {
-            if (answers == null || !answers.Any())
+            if (userAnswer == null || !userAnswer.Answers.Any())
             {
                 return BadRequest("No answers provided.");
             }
-            _surveyService.AddAnswers(answers);
-            return Ok();
+            
+            if(_surveyService.RespondToSurvey(userAnswer))
+            {
+                return Ok();
+            }
+
+            return BadRequest("User already answered");
         }
     }
 }

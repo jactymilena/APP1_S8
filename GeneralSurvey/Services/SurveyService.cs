@@ -24,6 +24,11 @@ namespace GeneralSurvey.Services
             return _dataBaseHelper.GetAnwsersBySurveyId(id);
         }
 
+        public bool RespondToSurvey(UserAnswer userAnswer)
+        {
+            return _dataBaseHelper.PostUserAnswerSurvey(userAnswer);
+        }
+
         public void AddAnswers(List<Answer> answers)
         {
             _dataBaseHelper.PostAnswers(answers);

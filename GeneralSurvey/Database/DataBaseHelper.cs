@@ -7,7 +7,7 @@ namespace GeneralSurvey.Database
     public class DataBaseHelper
     {
         private SQLiteConnection? _connection;   
-        public string ConnectionString { get; set; } = "Data Source=Database/database.db;Version=3;";
+        public string ConnectionString { get; set; } = "Data Source=Database/GeneralSurvey.db;Version=3;";
 
 
         public DataBaseHelper()
@@ -104,17 +104,49 @@ namespace GeneralSurvey.Database
         {
             foreach (var answer in answers)
             {
-                var query = "INSERT INTO ANSWER (Id, Id_Choice, Id_Survey, Answer_Date) VALUES (@Id, @IdChoice, @IdSurvey, @AnswerDate)";
+                var query = "INSERT INTO ANSWER (Id_Choice, Id_Survey) VALUES (@IdChoice, @IdSurvey)";
 
                 using var cmd = new SQLiteCommand(query, _connection);
 
-                cmd.Parameters.AddWithValue("@Id", (object)answer.Id ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@IdChoice", answer.IdChoice ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@IdSurvey", answer.IdSurvey ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@AnswerDate", answer.AnswerDate ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@IdChoice", answer.IdChoice);
+                cmd.Parameters.AddWithValue("@IdSurvey", answer.IdSurvey);
 
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public bool PostUserAnswerSurvey(UserAnswer userAnswer)
+        {
+            int id_survey = userAnswer.Answers.ToList()[0].IdSurvey;
+            if (CheckUserAnsweredSurvey(id_survey, userAnswer.IdUser))
+            {
+                return false;
+            }
+
+            PostAnswers(userAnswer.Answers);
+            PostUserSurvey(userAnswer.Answers.ToList()[0].IdSurvey, userAnswer.IdUser);
+
+            return true;
+        }
+
+        public void PostUserSurvey(int id_survey, int id_user)
+        {
+            var query = $"INSERT INTO SURVEY_USER (id_survey, id_user) VALUES (@IdSurvey, @IdUser)";
+
+            using var cmd = new SQLiteCommand(query, _connection);
+
+            cmd.Parameters.AddWithValue("@IdSurvey", id_survey);
+            cmd.Parameters.AddWithValue("@IdUser", id_user);
+
+            cmd.ExecuteNonQuery();
+        }
+
+        public bool CheckUserAnsweredSurvey(int id_survey, int id_user)
+        {
+            var query = $"SELECT * FROM SURVEY_USER WHERE id_survey = {id_survey} AND id_user = {id_user}";
+            var reader = ExecuteQuery(query);
+
+            return reader.HasRows;
         }
 
         public Survey GetSurveyById(int id)
@@ -197,10 +229,8 @@ namespace GeneralSurvey.Database
             {
                 var answer = new Answer
                 {
-                    Id = reader.GetInt32(0),
                     IdChoice = reader.GetInt32(1),
                     IdSurvey = reader.GetInt32(2),
-                    AnswerDate = reader.GetDateTime(3)
                 };
                 answers.Add(answer);
             }
