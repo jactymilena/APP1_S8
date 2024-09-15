@@ -15,6 +15,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(swagger =>
 {
     swagger.SwaggerDoc("v1", new() { Title = "GeneralSurvey", Version = "v1" });
@@ -40,6 +41,14 @@ builder.Services.AddSwaggerGen(swagger =>
             },
             Array.Empty<string>()
         }
+    });
+});
+
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.UseHttps("./cert/server.pfx", "T6#kL9w@Pz3Q#s2!Xm93inv8vevg7");
     });
 });
 
