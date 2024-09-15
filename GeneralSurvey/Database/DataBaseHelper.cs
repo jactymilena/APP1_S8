@@ -22,7 +22,6 @@ namespace GeneralSurvey.Database
             _connection.Open();
         }
 
-
         public SQLiteDataReader ExecuteQuery(string query)
         {
             using var cmd = new SQLiteCommand(query, _connection);

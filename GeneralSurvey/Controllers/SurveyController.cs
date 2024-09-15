@@ -16,6 +16,7 @@ namespace GeneralSurvey.Controllers
         }
 
         [HttpGet("GetSurvey/{id}")]
+        [Authorize]
         public IActionResult GetSurvey(int id)
         {
             var survey = _surveyService.GetSurvey(id);
@@ -27,6 +28,7 @@ namespace GeneralSurvey.Controllers
         }
 
         [HttpGet("GetAnswers/{id}")]
+        [Authorize]
         public IActionResult GetAnswers(int id)
         {
             var answer = _surveyService.GetAllAnswersBySurveyId(id);
@@ -37,10 +39,19 @@ namespace GeneralSurvey.Controllers
             return Ok(answer);
         }
 
-        [HttpPost("Post")]
+        [HttpPost("AnswerSurvey")]
         [Authorize]
         public IActionResult Post([FromBody] UserAnswer userAnswer)
         {
+            HttpContext context = HttpContext;
+            var user = (User?)context.Items["User"];
+
+            if (user != null && user.Id != userAnswer.IdUser)
+            {
+                return BadRequest("User id does not match the token.");
+            }
+
+
             if (userAnswer == null || !userAnswer.Answers.Any())
             {
                 return BadRequest("No answers provided.");
