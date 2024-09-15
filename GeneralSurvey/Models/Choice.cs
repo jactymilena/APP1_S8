@@ -4,8 +4,6 @@
     {
         public int Id { get; set; }
         public string? Letter { get; set; }
-        public int? IdQuestion { get; set; }
         public string? Response { get; set; }
-        public Question? Question { get; set; }
     }
 }

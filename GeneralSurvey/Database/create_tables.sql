@@ -77,14 +77,14 @@ VALUES ('Sondage 1'),
        ('Sondage 2');
 
 INSERT INTO QUESTION (title, id_survey) 
-VALUES ('À quelle tranche d''âge appartenez-vous?', 1000),
-       ('Êtes-vous une femme ou un homme?', 1000),
-       ('Quel journal lisez-vous à la maison?', 1000),
-       ('Combien de temps accordez-vous à la lecture de votre journal quotidiennement?', 1000),
-       ('À quelle tranche d''âge appartenez-vous?', 2000),
-       ('Êtes-vous une femme ou un homme?', 2000),
-       ('Combien de tasses de café buvez-vous chaque jour?', 2000),
-       ('Combien de consommations alcoolisées buvez-vous chaque jour?', 2000);
+VALUES ('À quelle tranche d''âge appartenez-vous?', 1),
+       ('Êtes-vous une femme ou un homme?', 1),
+       ('Quel journal lisez-vous à la maison?', 1),
+       ('Combien de temps accordez-vous à la lecture de votre journal quotidiennement?', 1),
+       ('À quelle tranche d''âge appartenez-vous?', 2),
+       ('Êtes-vous une femme ou un homme?', 2),
+       ('Combien de tasses de café buvez-vous chaque jour?', 2),
+       ('Combien de consommations alcoolisées buvez-vous chaque jour?', 2);
 
 INSERT INTO CHOICE (letter, id_question, response) 
 VALUES ('A', 1, '0-25 ans'),                     -- Réponse pour la question 0100
