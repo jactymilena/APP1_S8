@@ -143,7 +143,7 @@ namespace GeneralSurvey.Database
             }
         }
 
-        public bool PostUserAnswerSurvey(SurveyResponse surveyResponse)
+        public virtual bool PostUserAnswerSurvey(SurveyResponse surveyResponse)
         {
             if (HasUserAlreadyAnswered(surveyResponse.SurveyId, surveyResponse.UserId))
                 return false;
@@ -159,7 +159,7 @@ namespace GeneralSurvey.Database
             return false;
         }
 
-        public void PostUserSurvey(int surveyId, int userId)
+        public virtual void PostUserSurvey(int surveyId, int userId)
         {
             var query = $"INSERT INTO SURVEY_USER (id_survey, id_user) VALUES (@IdSurvey, @IdUser)";
 
@@ -171,7 +171,7 @@ namespace GeneralSurvey.Database
             cmd.ExecuteNonQuery();
         }
 
-        public bool ValidateChoices(SurveyResponse surveyResponse)
+        public virtual bool ValidateChoices(SurveyResponse surveyResponse)
         {
             var query = $"SELECT * FROM CHOICE WHERE id_question IN (SELECT id FROM QUESTION WHERE id_survey = @id_survey)";
             using var cmd = new SQLiteCommand(query, _connection);
@@ -199,7 +199,7 @@ namespace GeneralSurvey.Database
             return true;
         }
 
-        public bool HasUserAlreadyAnswered(int surveyId, int userId)
+        public virtual bool HasUserAlreadyAnswered(int surveyId, int userId)
         {
             var query = $"SELECT * FROM SURVEY_USER WHERE id_survey = @surveyId AND id_user = @userId";
             using var cmd = new SQLiteCommand(query, _connection);
@@ -295,7 +295,7 @@ namespace GeneralSurvey.Database
             return choices;
         }
 
-        public List<Answer> GetAnwsersBySurveyId(int surveyId)
+        public virtual List<Answer> GetAnwsersBySurveyId(int surveyId)
         {
             var query = $"SELECT * FROM ANSWER WHERE id_survey = @surveyId";
             using var cmd = new SQLiteCommand(query, _connection);
@@ -309,7 +309,7 @@ namespace GeneralSurvey.Database
             {
                 var answer = new Answer
                 {
-                    choiceId = reader.GetInt32(1),
+                    ChoiceId = reader.GetInt32(1),
                 };
                 answers.Add(answer);
             }

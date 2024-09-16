@@ -1,4 +1,4 @@
 ﻿public class Answer
 {
-    public int choiceId { get; set; }
+    public int ChoiceId { get; set; }
 }

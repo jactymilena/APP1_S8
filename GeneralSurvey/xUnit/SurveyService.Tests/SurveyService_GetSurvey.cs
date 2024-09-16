@@ -26,7 +26,8 @@ namespace Prime.UnitTests.Services
             Assert.Equal(expectedResult.Id, result.Id);
             Assert.Equal(expectedResult.Title, result.Title);
         }
-       /* [Fact]
+
+       [Fact]
         public void GetSurvey_ReturnsSurvey_WhenIdIsInvalid()
         {
             // Arrange
@@ -39,6 +40,6 @@ namespace Prime.UnitTests.Services
 
             //Assert
             Assert.Null(result);
-        }*/
+        }
     }
 }
