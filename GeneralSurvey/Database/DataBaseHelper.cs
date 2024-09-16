@@ -10,12 +10,12 @@ namespace GeneralSurvey.Database
 
         public DataBaseHelper()
         {
-            CreateDataBase();
+            //CreateDataBase();
         }
 
-        private void CreateDataBase()
+        public void ConnectToDataBase()
         {
-            SQLiteConnection.CreateFile("GeneralSurvey.db");
+            //SQLiteConnection.CreateFile("GeneralSurvey.db");
             _connection = new SQLiteConnection(ConnectionString);
             _connection.Open();
         }
@@ -199,7 +199,7 @@ namespace GeneralSurvey.Database
             return reader.HasRows;
         }
 
-        public Survey? GetSurveyById(int id)
+        public virtual Survey? GetSurveyById(int id)
         {
             var query = $"SELECT * FROM SURVEY WHERE id = {id}";
             var reader = ExecuteQuery(query);

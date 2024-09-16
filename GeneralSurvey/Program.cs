@@ -55,6 +55,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 var app = builder.Build();
 
 var db = app.Services.GetRequiredService<DataBaseHelper>();
+db.ConnectToDataBase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
