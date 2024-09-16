@@ -17,7 +17,6 @@ namespace GeneralSurvey.Database
         public SQLiteDataReader ExecuteQuery(string query)
         {
             using var cmd = new SQLiteCommand(query, _connection);
-            cmd.ExecuteNonQuery();
 
             return cmd.ExecuteReader();
         }
@@ -26,6 +25,11 @@ namespace GeneralSurvey.Database
         {
             var query = $"INSERT INTO User (username, password, salt) VALUES ('{user.Username}', '{user.Password}', '{user.Salt}')";
             ExecuteQuery(query);
+
+            query = $"SELECT id FROM User WHERE username = '{user.Username}'";
+            var reader = ExecuteQuery(query);
+            reader.Read();
+            user.Id = reader.GetInt32(0);
         }
 
         public void PostAPIKey(Guid apiKey)

@@ -62,7 +62,7 @@ namespace GeneralSurvey.Services
                     Salt = Convert.ToHexString(salt)
                 };
 
-                _db.PostUser(user); ;
+                _db.PostUser(user);
                 _db.PutAPIKey(user.Id, model.APIKey);
 
                 return true;
