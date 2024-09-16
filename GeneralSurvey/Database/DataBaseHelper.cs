@@ -8,14 +8,8 @@ namespace GeneralSurvey.Database
         private SQLiteConnection? _connection;   
         public string ConnectionString { get; set; } = "Data Source=Database/GeneralSurvey.db;Version=3;";
 
-        public DataBaseHelper()
-        {
-            //CreateDataBase();
-        }
-
         public void ConnectToDataBase()
         {
-            //SQLiteConnection.CreateFile("GeneralSurvey.db");
             _connection = new SQLiteConnection(ConnectionString);
             _connection.Open();
         }
@@ -28,7 +22,7 @@ namespace GeneralSurvey.Database
             return cmd.ExecuteReader();
         }
 
-        public void PostUser(User user)
+        public virtual void PostUser(User user)
         {
             var query = $"INSERT INTO User (username, password, salt) VALUES ('{user.Username}', '{user.Password}', '{user.Salt}')";
             ExecuteQuery(query);
@@ -40,17 +34,20 @@ namespace GeneralSurvey.Database
             ExecuteQuery(query);
         }
 
-        public void PutAPIKey(int userId, Guid apiKey)
+        public virtual void PutAPIKey(int userId, Guid apiKey)
         {
             var query = $"UPDATE API_KEY SET id_user = '{userId}' WHERE key = '{apiKey}'";
             ExecuteQuery(query);
         }
 
-        public User GetUserByID(int id)
+        public virtual User? GetUserByID(int id)
         {
             var query = $"SELECT * FROM User WHERE id = {id}";
 
             var reader = ExecuteQuery(query);
+            if (!reader.HasRows)
+                return new User();
+
             reader.Read();
             var user = new User
             {
@@ -84,7 +81,7 @@ namespace GeneralSurvey.Database
             return users;
         }
 
-        public bool VerifyAPIKey(Guid apiKey)
+        public virtual bool VerifyAPIKey(Guid apiKey)
         {
             var query = $"SELECT key, id_user FROM API_KEY WHERE key = '{apiKey}'";
             var reader = ExecuteQuery(query);
@@ -100,7 +97,7 @@ namespace GeneralSurvey.Database
             return reader[reader.GetOrdinal("id_user")] == DBNull.Value;
         }
 
-        public List<User> GetUsersByUsername(string username)
+        public virtual List<User> GetUsersByUsername(string username)
         {
             var query = $"SELECT * FROM User WHERE username = '{username}'";
             var reader = ExecuteQuery(query);

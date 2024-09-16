@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<ISurveyService, SurveyService>();
 builder.Services.AddSingleton<DataBaseHelper>();
+builder.Services.AddSingleton<AuthentificationHelper>();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddScoped<IUserService, UserService>();
 
