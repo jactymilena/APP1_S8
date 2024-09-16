@@ -23,32 +23,52 @@ namespace GeneralSurvey.Database
 
         public virtual void PostUser(User user)
         {
-            var query = $"INSERT INTO User (username, password, salt) VALUES ('{user.Username}', '{user.Password}', '{user.Salt}')";
-            ExecuteQuery(query);
+            var query = $"INSERT INTO User (username, password, salt) VALUES (@username, @password, @salt)";
+            using var cmd = new SQLiteCommand(query, _connection);
 
-            query = $"SELECT id FROM User WHERE username = '{user.Username}'";
-            var reader = ExecuteQuery(query);
+            cmd.Parameters.AddWithValue("@username", user.Username);
+            cmd.Parameters.AddWithValue("@password", user.Password);
+            cmd.Parameters.AddWithValue("@salt", user.Salt);
+
+            cmd.ExecuteNonQuery();
+
+            query = $"SELECT id FROM User WHERE username = @username";
+            using var cmd2 = new SQLiteCommand(query, _connection);
+            cmd2.Parameters.AddWithValue("@username", user.Username);
+
+            var reader = cmd2.ExecuteReader();
             reader.Read();
             user.Id = reader.GetInt32(0);
         }
 
         public void PostAPIKey(Guid apiKey)
         {
-            var query = $"INSERT INTO API_KEY (key) VALUES ('{apiKey}')";
-            ExecuteQuery(query);
+            var query = $"INSERT INTO API_KEY (key) VALUES (@apiKey)";
+            using var cmd = new SQLiteCommand(query, _connection);
+
+            cmd.Parameters.AddWithValue("@apiKey", apiKey);
+            cmd.ExecuteNonQuery();
         }
 
         public virtual void PutAPIKey(int userId, Guid apiKey)
         {
-            var query = $"UPDATE API_KEY SET id_user = '{userId}' WHERE key = '{apiKey}'";
-            ExecuteQuery(query);
+            var query = $"UPDATE API_KEY SET id_user = @userId WHERE key = @apiKey";
+            using var cmd = new SQLiteCommand(query, _connection);
+
+            cmd.Parameters.AddWithValue("@userId", userId);
+            cmd.Parameters.AddWithValue("@apiKey", apiKey.ToString());
+            cmd.ExecuteNonQuery();
+
         }
 
         public virtual User? GetUserByID(int id)
         {
-            var query = $"SELECT * FROM User WHERE id = {id}";
+            var query = $"SELECT * FROM User WHERE id = @id";
+            using var cmd = new SQLiteCommand(query, _connection);
 
-            var reader = ExecuteQuery(query);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var reader = cmd.ExecuteReader();
             if (!reader.HasRows)
                 return new User();
 
@@ -63,32 +83,14 @@ namespace GeneralSurvey.Database
             return user;
         }
 
-        public List<User> GetAllUsers()
-        {
-            var query = "SELECT * FROM User";
-            var reader = ExecuteQuery(query);  
-
-            var users = new List<User>();
-
-            while (reader.Read())
-            {
-                var user = new User
-                {
-                    Id = reader.GetInt32(0),
-                    Username = reader.GetString(1),
-                    Password = reader.GetString(2)
-                };
-
-                users.Add(user);
-            }
-
-            return users;
-        }
-
         public virtual bool VerifyAPIKey(Guid apiKey)
         {
-            var query = $"SELECT key, id_user FROM API_KEY WHERE key = '{apiKey}'";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT key, id_user FROM API_KEY WHERE key = @apikey";
+            using var cmd = new SQLiteCommand(query, _connection);
+
+            cmd.Parameters.AddWithValue("@apikey", apiKey.ToString());
+
+            var reader = cmd.ExecuteReader();
 
             if (!reader.HasRows)
             {
@@ -103,9 +105,11 @@ namespace GeneralSurvey.Database
 
         public virtual List<User> GetUsersByUsername(string username)
         {
-            var query = $"SELECT * FROM User WHERE username = '{username}'";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM User WHERE username = @username";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@username", username);
 
+            var reader = cmd.ExecuteReader();
             var users = new List<User>();
 
             while (reader.Read())
@@ -169,8 +173,11 @@ namespace GeneralSurvey.Database
 
         public bool ValidateChoices(SurveyResponse surveyResponse)
         {
-            var query = $"SELECT * FROM CHOICE WHERE id_question IN (SELECT id FROM QUESTION WHERE id_survey = {surveyResponse.SurveyId})";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM CHOICE WHERE id_question IN (SELECT id FROM QUESTION WHERE id_survey = @id_survey)";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@id_survey", surveyResponse.SurveyId);
+
+            var reader = cmd.ExecuteReader();
 
             if (!reader.HasRows)
                 return false;
@@ -194,16 +201,23 @@ namespace GeneralSurvey.Database
 
         public bool HasUserAlreadyAnswered(int surveyId, int userId)
         {
-            var query = $"SELECT * FROM SURVEY_USER WHERE id_survey = {surveyId} AND id_user = {userId}";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM SURVEY_USER WHERE id_survey = @surveyId AND id_user = @userId";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@surveyId", surveyId);
+            cmd.Parameters.AddWithValue("@userId", userId);
+
+            var reader = cmd.ExecuteReader();
 
             return reader.HasRows;
         }
 
         public virtual Survey? GetSurveyById(int id)
         {
-            var query = $"SELECT * FROM SURVEY WHERE id = {id}";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM SURVEY WHERE id = @id";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@id", id);
+
+            var reader = cmd.ExecuteReader();
 
             if (!reader.HasRows)
                 return null;
@@ -232,8 +246,11 @@ namespace GeneralSurvey.Database
 
         public ICollection<Question> GetQuestionsBySurveyId(int surveyId)
         {
-            var query = $"SELECT * FROM QUESTION WHERE id_survey = {surveyId}";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM QUESTION WHERE id_survey = @surveyId";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@surveyId", surveyId);
+
+            var reader = cmd.ExecuteReader();
 
             var questions = new List<Question>();
 
@@ -256,8 +273,11 @@ namespace GeneralSurvey.Database
 
         public ICollection<Choice> GetChoicesByQuestionId(int questionId)
         {
-            var query = $"SELECT * FROM CHOICE WHERE id_question = {questionId}";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM CHOICE WHERE id_question = @questionId";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@questionId", questionId);
+
+            var reader = cmd.ExecuteReader();
 
             var choices = new List<Choice>();
 
@@ -277,8 +297,11 @@ namespace GeneralSurvey.Database
 
         public List<Answer> GetAnwsersBySurveyId(int surveyId)
         {
-            var query = $"SELECT * FROM ANSWER WHERE id_survey = {surveyId}";
-            var reader = ExecuteQuery(query);
+            var query = $"SELECT * FROM ANSWER WHERE id_survey = @surveyId";
+            using var cmd = new SQLiteCommand(query, _connection);
+            cmd.Parameters.AddWithValue("@surveyId", surveyId);
+
+            var reader = cmd.ExecuteReader();
 
             var answers = new List<Answer>();
 
