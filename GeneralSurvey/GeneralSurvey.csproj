@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Database\NewFolder\**" />
+    <Content Remove="Database\NewFolder\**" />
+    <EmbeddedResource Remove="Database\NewFolder\**" />
+    <None Remove="Database\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\UesrComponent.cs" />
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="SurveyDbContext.cs" />
@@ -23,10 +30,6 @@
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 	<PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Database\NewFolder\" />
   </ItemGroup>
 
 </Project>
