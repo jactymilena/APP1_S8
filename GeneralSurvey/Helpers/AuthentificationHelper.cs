@@ -15,6 +15,22 @@ namespace GeneralSurvey.Helpers
 
         public virtual string GenerateJwtToken(User user, string secret)
         {
+            if (secret == null)
+            {
+                throw new ArgumentNullException(nameof(secret));
+            }
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            int lengthInBits = secret.Length * 16;
+            if (lengthInBits <= 256)
+            {
+                throw new ArgumentException("The secret string must be longer than 256 bits.");
+            }
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -29,14 +45,20 @@ namespace GeneralSurvey.Helpers
 
         public virtual string HashPassword(string password, out byte[] salt)
         {
-
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("The password string must not be empty");
+            }
             salt = RandomNumberGenerator.GetBytes(keySize);
             return HashPassword(password, salt);
         }
 
         private string HashPassword(string password, byte[] salt)
         {
-
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("The password string must not be empty");
+            }
             var hash = Rfc2898DeriveBytes.Pbkdf2(
                 Encoding.UTF8.GetBytes(password),
                 salt,
