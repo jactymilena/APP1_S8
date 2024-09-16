@@ -29,8 +29,15 @@ namespace Prime.UnitTests.Services
        /* [Fact]
         public void GetSurvey_ReturnsSurvey_WhenIdIsInvalid()
         {
-            var surveyService = new SurveyService(new GeneralSurvey.Database.DataBaseHelper());
+            // Arrange
+            var mockDbHelper = new Mock<DataBaseHelper>();
+            mockDbHelper.Setup(db => db.GetSurveyById(1)).Returns((Survey?)null);
+            var surveyService = new SurveyService(mockDbHelper.Object);
+
+            // Act
             var result = surveyService.GetSurvey(-1);
+
+            //Assert
             Assert.Null(result);
         }*/
     }
