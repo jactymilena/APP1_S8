@@ -41,34 +41,30 @@ namespace GeneralSurvey.Controllers
 
         [HttpPost("AnswerSurvey")]
         [Authorize]
-        public IActionResult Post([FromBody] ICollection<Answer> answers)
+        public IActionResult Post([FromBody] SurveyResponse surveyResponse)
         {
             HttpContext context = HttpContext;
             var user = (User?)context.Items["User"];
 
             if (user == null)
             {
-                return BadRequest("Invalid token.");
+                return BadRequest(new { message = "Invalid token." });
             }
 
 
-            if (answers == null || answers.Count == 0)
+            if (surveyResponse.QuestionAnswers == null || surveyResponse.QuestionAnswers.Count == 0)
             {
-                return BadRequest("No answers provided.");
+                return BadRequest(new { message = "No answers provided." });
             }
 
-            UserAnswer userAnswer = new UserAnswer
-            {
-                UserId = user.Id,
-                Answers = answers
-            };
+            surveyResponse.UserId = user.Id;
             
-            if(_surveyService.RespondToSurvey(userAnswer))
+            if(_surveyService.RespondToSurvey(surveyResponse))
             {
-                return Ok();
+                return Ok(new { message = "User successfully answered to the survey." });
             }
 
-            return BadRequest("User already answered to the survey.");
+            return BadRequest(new { message = "User already answered to the survey or user entered invalid choices." });
         }
     }
 }

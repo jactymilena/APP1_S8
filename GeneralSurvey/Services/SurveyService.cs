@@ -12,7 +12,7 @@ namespace GeneralSurvey.Services
             _dataBaseHelper = dataBaseHelper;
         }
 
-        public Survey GetSurvey(int id)
+        public Survey? GetSurvey(int id)
         {
             return _dataBaseHelper.GetSurveyById(id);
         }
@@ -22,15 +22,9 @@ namespace GeneralSurvey.Services
             return _dataBaseHelper.GetAnwsersBySurveyId(id);
         }
 
-        public bool RespondToSurvey(UserAnswer userAnswer)
+        public bool RespondToSurvey(SurveyResponse surveyResponse)
         {
-            return _dataBaseHelper.PostUserAnswerSurvey(userAnswer);
+            return _dataBaseHelper.PostUserAnswerSurvey(surveyResponse);
         }
-
-        public void AddAnswers(List<Answer> answers)
-        {
-            _dataBaseHelper.PostAnswers(answers);
-        }
-
     }
 }

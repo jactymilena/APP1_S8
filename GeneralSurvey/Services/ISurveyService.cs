@@ -6,7 +6,6 @@ namespace GeneralSurvey.Services
     {
         Survey? GetSurvey(int id);
         List<Answer> GetAllAnswersBySurveyId(int id);
-        void AddAnswers(List<Answer> answers);
-        bool RespondToSurvey(UserAnswer userAnswer);
+        bool RespondToSurvey(SurveyResponse surveyResponse);
     }
 }

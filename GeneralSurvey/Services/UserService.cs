@@ -53,7 +53,6 @@ namespace GeneralSurvey.Services
 
             if (_db.VerifyAPIKey(model.APIKey))
             {
-                // TODO : return message instead of boolean
                 if (string.IsNullOrWhiteSpace(model.Password))
                     return false;
 

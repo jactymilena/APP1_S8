@@ -1,5 +1,4 @@
 ﻿using GeneralSurvey.Models;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using System.Data.SQLite;
 
 namespace GeneralSurvey.Database
@@ -95,7 +94,7 @@ namespace GeneralSurvey.Database
                 return false;
             }
 
-            // Verify if the API key is already in use
+            // Verify if the API key is already used
             reader.Read();
 
             return reader[reader.GetOrdinal("id_user")] == DBNull.Value;
@@ -124,50 +123,77 @@ namespace GeneralSurvey.Database
             return users;
         }
 
-        public void PostAnswers(ICollection<Answer> answers)
+        public void PostAnswers(SurveyResponse surveyResponse)
         {
-            foreach (var answer in answers)
+            foreach (var answer in surveyResponse.QuestionAnswers)
             {
                 var query = "INSERT INTO ANSWER (Id_Choice, Id_Survey) VALUES (@IdChoice, @IdSurvey)";
 
                 using var cmd = new SQLiteCommand(query, _connection);
 
-                cmd.Parameters.AddWithValue("@IdChoice", answer.IdChoice);
-                cmd.Parameters.AddWithValue("@IdSurvey", answer.IdSurvey);
+                cmd.Parameters.AddWithValue("@IdChoice", answer.ChoiceId);
+                cmd.Parameters.AddWithValue("@IdSurvey", surveyResponse.SurveyId);
 
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public bool PostUserAnswerSurvey(UserAnswer userAnswer)
+        public bool PostUserAnswerSurvey(SurveyResponse surveyResponse)
         {
-            int id_survey = userAnswer.Answers.ToList()[0].IdSurvey;
-            if (CheckUserAnsweredSurvey(id_survey, userAnswer.UserId))
-            {
+            if (HasUserAlreadyAnswered(surveyResponse.SurveyId, surveyResponse.UserId))
                 return false;
+
+            if (ValidateChoices(surveyResponse))
+            {
+                PostAnswers(surveyResponse);
+                PostUserSurvey(surveyResponse.SurveyId, surveyResponse.UserId);
+                return true;
+
             }
 
-            PostAnswers(userAnswer.Answers);
-            PostUserSurvey(userAnswer.Answers.ToList()[0].IdSurvey, userAnswer.UserId);
-
-            return true;
+            return false;
         }
 
-        public void PostUserSurvey(int id_survey, int id_user)
+        public void PostUserSurvey(int surveyId, int userId)
         {
             var query = $"INSERT INTO SURVEY_USER (id_survey, id_user) VALUES (@IdSurvey, @IdUser)";
 
             using var cmd = new SQLiteCommand(query, _connection);
 
-            cmd.Parameters.AddWithValue("@IdSurvey", id_survey);
-            cmd.Parameters.AddWithValue("@IdUser", id_user);
+            cmd.Parameters.AddWithValue("@IdSurvey", surveyId);
+            cmd.Parameters.AddWithValue("@IdUser", userId);
 
             cmd.ExecuteNonQuery();
         }
 
-        public bool CheckUserAnsweredSurvey(int id_survey, int id_user)
+        public bool ValidateChoices(SurveyResponse surveyResponse)
         {
-            var query = $"SELECT * FROM SURVEY_USER WHERE id_survey = {id_survey} AND id_user = {id_user}";
+            var query = $"SELECT * FROM CHOICE WHERE id_question IN (SELECT id FROM QUESTION WHERE id_survey = {surveyResponse.SurveyId})";
+            var reader = ExecuteQuery(query);
+
+            if (!reader.HasRows)
+                return false;
+
+            var choices = new List<int>();
+            while (reader.Read()) 
+            {
+                choices.Add(reader.GetInt32(0));
+            }
+
+            foreach (var answer in surveyResponse.QuestionAnswers)
+            {
+                if (!choices.Contains(answer.ChoiceId))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public bool HasUserAlreadyAnswered(int surveyId, int userId)
+        {
+            var query = $"SELECT * FROM SURVEY_USER WHERE id_survey = {surveyId} AND id_user = {userId}";
             var reader = ExecuteQuery(query);
 
             return reader.HasRows;
@@ -259,8 +285,7 @@ namespace GeneralSurvey.Database
             {
                 var answer = new Answer
                 {
-                    IdChoice = reader.GetInt32(1),
-                    IdSurvey = reader.GetInt32(2),
+                    choiceId = reader.GetInt32(1),
                 };
                 answers.Add(answer);
             }
