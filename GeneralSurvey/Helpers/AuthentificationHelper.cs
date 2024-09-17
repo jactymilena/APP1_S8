@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Xunit;
 
 namespace GeneralSurvey.Helpers
 {
@@ -45,6 +46,10 @@ namespace GeneralSurvey.Helpers
 
         public virtual string HashPassword(string password, out byte[] salt)
         {
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
             if (string.IsNullOrWhiteSpace(password))
             {
                 throw new ArgumentException("The password string must not be empty");
@@ -55,6 +60,10 @@ namespace GeneralSurvey.Helpers
 
         private string HashPassword(string password, byte[] salt)
         {
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
             if (string.IsNullOrWhiteSpace(password))
             {
                 throw new ArgumentException("The password string must not be empty");
@@ -71,6 +80,8 @@ namespace GeneralSurvey.Helpers
 
         public virtual bool VerifyPassword(string password, string hash, byte[] salt)
         {
+            Assert.Equal(keySize, salt.Length);
+
             var hashToCompare = Rfc2898DeriveBytes.Pbkdf2(
                 Encoding.UTF8.GetBytes(password),
                 salt,

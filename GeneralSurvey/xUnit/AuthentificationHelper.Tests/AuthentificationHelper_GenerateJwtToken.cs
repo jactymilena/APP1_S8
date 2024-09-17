@@ -1,11 +1,6 @@
 using Xunit;
-using Moq;
 using GeneralSurvey.Models;
-using GeneralSurvey.Services;
-using GeneralSurvey.Database;
 using GeneralSurvey.Helpers;
-using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace Prime.UnitTests.Services
 {

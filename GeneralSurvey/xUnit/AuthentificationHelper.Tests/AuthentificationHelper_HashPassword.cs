@@ -1,15 +1,5 @@
 using Xunit;
-using Moq;
-using GeneralSurvey.Models;
-using GeneralSurvey.Services;
-using GeneralSurvey.Database;
 using GeneralSurvey.Helpers;
-using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Prime.UnitTests.Services
 {
@@ -43,22 +33,37 @@ namespace Prime.UnitTests.Services
         [Fact]
         public void AuthentificationHelper_HashPassword_PwdIsNull()
         {
+            // Arrange
+            var hasher = new AuthentificationHelper();
 
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentNullException>(() => hasher.HashPassword(null, out var _));
+            Assert.Equal("password", exception.ParamName);
         }
         [Fact]
         public void AuthentificationHelper_HashPassword_SaltIsEmpty()
         {
+            // Arrange
+            var password = "password";
+            var salt = Array.Empty<byte>();
+            var hasher = new AuthentificationHelper();
 
+            // Act & Assert
+            var salt_out = hasher.HashPassword(password, out salt);
+            Assert.NotNull(salt_out);
+            Assert.NotEmpty(salt_out);
         }
         [Fact]
-        public void AuthentificationHelper_HashPassword_SaltIsNull()
+        public void AuthentificationHelper_HashPassword_PwdIsVeryLong()
         {
+            // Arrange
+            var password = new string('a', 1000);
+            var hasher = new AuthentificationHelper();
 
-        }
-        [Fact]
-        public void AuthentificationHelper_HashPassword_PwdIsTooLong()
-        {
-
+            // Act & Assert
+            var salt = hasher.HashPassword(password, out var _);
+            Assert.NotNull(salt);
+            Assert.NotEmpty(salt);
         }
     }
 }
