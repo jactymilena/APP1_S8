@@ -18,6 +18,11 @@ namespace GeneralSurvey.Controllers
         [HttpPost("Authenticate")]
         public IActionResult Authenticate([FromBody] AuthentificationRequest model)
         {
+            if (model == null)
+                return BadRequest(new { message = "Model is null" });
+            if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
+                return BadRequest(new { message = "Username or password is empty" });
+
             var response = _userService.Authenticate(model);
 
             if (response == null)
@@ -29,6 +34,13 @@ namespace GeneralSurvey.Controllers
         [HttpPost("Register")]
         public IActionResult Register([FromBody] RegisterRequest model)
         {
+            if (model == null)
+                return BadRequest(new { message = "Model is null" });
+            if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
+                return BadRequest(new { message = "Username or password is empty" });
+            if (model.APIKey == Guid.Empty)
+                return BadRequest(new { message = "ApiKey is empty" });
+
             var response = _userService.Register(model);
 
             if (!response)

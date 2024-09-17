@@ -47,7 +47,7 @@ namespace GeneralSurvey.Services
             if (model == null)
                 return false;
 
-            if (string.IsNullOrWhiteSpace(model.Password))
+            if (string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrEmpty(model.Username))
                 return false;
 
             if (_db.VerifyAPIKey(model.APIKey))
