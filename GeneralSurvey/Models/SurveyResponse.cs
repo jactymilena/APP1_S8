@@ -7,7 +7,6 @@ namespace GeneralSurvey.Models
         public int SurveyId { get; set; }
         [JsonIgnore]
         public int UserId { get; set; }
-
         public List<QuestionAnswer> QuestionAnswers { get; set; } = new List<QuestionAnswer>();
     }
 }

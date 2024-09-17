@@ -51,7 +51,6 @@ namespace GeneralSurvey.Controllers
                 return BadRequest(new { message = "Invalid token." });
             }
 
-
             if (surveyResponse.QuestionAnswers == null || surveyResponse.QuestionAnswers.Count == 0)
             {
                 return BadRequest(new { message = "No answers provided." });
