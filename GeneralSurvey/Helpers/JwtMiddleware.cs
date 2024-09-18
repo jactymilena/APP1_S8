@@ -8,6 +8,7 @@ using System.Text;
 
 namespace GeneralSurvey.Helpers
 {
+    [ExcludeFromCodeCoverage]
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;

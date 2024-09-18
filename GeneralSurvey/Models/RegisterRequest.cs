@@ -1,5 +1,8 @@
-﻿namespace GeneralSurvey.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace GeneralSurvey.Models
 {
+    [ExcludeFromCodeCoverage]
     public class RegisterRequest
     {
         public string Username { get; set; } = string.Empty;

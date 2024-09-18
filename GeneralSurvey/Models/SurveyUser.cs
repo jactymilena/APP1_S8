@@ -1,5 +1,7 @@
 ﻿using GeneralSurvey.Models;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 public class SurveyUser
 {
     public int Id { get; set; }

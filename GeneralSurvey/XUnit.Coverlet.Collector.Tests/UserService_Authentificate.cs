@@ -172,5 +172,22 @@ namespace XUnit.Coverlet.Collector.Tests
 
             Assert.Null(response);
         }
+
+        [Fact]
+        public void Authenticate_EmptyUsers()
+        {
+            var _mockDbHelper = new Mock<DataBaseHelper>();
+            var _mockAuthHelper = new Mock<AuthentificationHelper>();
+
+            _mockDbHelper.Setup(x => x.GetUsersByUsername(It.IsAny<string>())).Returns(new List<User>());
+
+            IOptions<AppSettings> someOptions = Options.Create(new AppSettings { Secret = "secret" });
+            var userService = new UserService(_mockDbHelper.Object, someOptions, _mockAuthHelper.Object);
+            AuthentificationRequest request = new AuthentificationRequest();
+
+            var response = userService.Authenticate(request);
+
+            Assert.Null(response);
+        }
     }
 }

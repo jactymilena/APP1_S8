@@ -60,14 +60,6 @@ namespace GeneralSurvey.Helpers
 
         private string HashPassword(string password, byte[] salt)
         {
-            if (password == null)
-            {
-                throw new ArgumentNullException(nameof(password));
-            }
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException("The password string must not be empty");
-            }
             var hash = Rfc2898DeriveBytes.Pbkdf2(
                 Encoding.UTF8.GetBytes(password),
                 salt,

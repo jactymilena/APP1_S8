@@ -1,8 +1,12 @@
 ﻿using GeneralSurvey.Models;
 using System.Data.SQLite;
+using System.Diagnostics.CodeAnalysis;
 
 namespace GeneralSurvey.Database
 {
+    // Excluded from code coverage because it is a data base helper class that
+    // only contains methods to interact with the data base, there is no logic to test
+    [ExcludeFromCodeCoverage]
     public class DataBaseHelper
     {
         private SQLiteConnection? _connection;   

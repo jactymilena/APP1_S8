@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <StartupObject>GeneralSurvey.SurveyApplication</StartupObject>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -53,4 +54,5 @@
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>    
 </PropertyGroup>
 
+  
 </Project>

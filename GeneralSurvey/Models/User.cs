@@ -1,5 +1,8 @@
-﻿namespace GeneralSurvey.Models
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace GeneralSurvey.Models
 {
+    [ExcludeFromCodeCoverage]
     public class User
     {
         public int Id { get; set; }

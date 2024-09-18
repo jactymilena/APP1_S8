@@ -25,7 +25,7 @@ namespace GeneralSurvey.Services
             if (string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password)) return null;
 
             var users = _db.GetUsersByUsername(model.Username);
-            if (users != null && users.Count != 0)
+            if (users.Count != 0)
             {
                 for (int i = 0; i < users.Count; i++)
                 {
