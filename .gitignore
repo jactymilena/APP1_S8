@@ -42,6 +42,10 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-.db
+*.db
 
-.coverage
+*.coverage
+
+coveragereport/
+
+*.xml

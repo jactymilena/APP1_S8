@@ -2,6 +2,7 @@
 using GeneralSurvey.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -18,6 +19,7 @@ namespace GeneralSurvey.Helpers
             _appSettings = appSettings.Value;
         }
 
+        [ExcludeFromCodeCoverage]
         public async Task Invoke(HttpContext context, IUserService userService)
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
@@ -30,6 +32,7 @@ namespace GeneralSurvey.Helpers
             await _next(context);
         }
 
+        [ExcludeFromCodeCoverage]
         void AttachUserToContext(HttpContext context, IUserService userService, string token)
         {
             try

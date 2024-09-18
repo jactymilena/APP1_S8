@@ -1,9 +1,10 @@
-using Xunit;
 using GeneralSurvey.Models;
 using GeneralSurvey.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class AuthentificationHelper_GenerateJwtToken
     {
         [Fact]

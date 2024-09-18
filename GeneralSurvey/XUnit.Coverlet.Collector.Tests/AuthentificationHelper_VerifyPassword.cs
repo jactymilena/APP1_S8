@@ -1,12 +1,11 @@
-﻿using Xunit;
-using GeneralSurvey.Helpers;
+﻿using GeneralSurvey.Helpers;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
-using System;
-using System.Drawing.Printing;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class AuthentificationHelper_VerifyPassword
     {
         [Fact]
@@ -89,7 +88,7 @@ namespace Prime.UnitTests.Services
             var helper = new AuthentificationHelper();
 
             // Act & Assert
-            var exception = Assert.Throws<Xunit.Sdk.EqualException> (() => helper.VerifyPassword(password, Convert.ToHexString(hash), Array.Empty<byte>()));
+            var exception = Assert.Throws<Xunit.Sdk.EqualException>(() => helper.VerifyPassword(password, Convert.ToHexString(hash), Array.Empty<byte>()));
         }
     }
 }

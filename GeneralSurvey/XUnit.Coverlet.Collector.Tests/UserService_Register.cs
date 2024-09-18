@@ -1,13 +1,14 @@
-using Xunit;
 using Moq;
 using GeneralSurvey.Models;
 using GeneralSurvey.Services;
 using GeneralSurvey.Database;
 using GeneralSurvey.Helpers;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class UserService_Register
     {
         [Fact]
@@ -50,7 +51,7 @@ namespace Prime.UnitTests.Services
             IOptions<AppSettings> someOptions = Options.Create(new AppSettings { Secret = "secret" });
             var userService = new UserService(_mockDbHelper.Object, someOptions, _mockAuthHelper.Object);
             RegisterRequest request = new RegisterRequest { APIKey = Guid.NewGuid(), Username = "user", Password = "pass" };
-            
+
             var response = userService.Register(request);
 
             Assert.False(response);

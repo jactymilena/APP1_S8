@@ -1,11 +1,12 @@
-using Xunit;
 using Moq;
 using GeneralSurvey.Models;
 using GeneralSurvey.Services;
 using GeneralSurvey.Database;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class SurveyService_RespondToSurvey
     {
         [Fact]
@@ -18,7 +19,7 @@ namespace Prime.UnitTests.Services
             var surveyService = new SurveyService(mockDbHelper.Object);
 
             var response = surveyService.RespondToSurvey(surveyResponse);
-            
+
             Assert.True(response);
         }
 
@@ -45,7 +46,7 @@ namespace Prime.UnitTests.Services
             var surveyService = new SurveyService(mockDbHelper.Object);
 
             var response = surveyService.RespondToSurvey(surveyResponse);
-            
+
             Assert.False(response);
         }
     }

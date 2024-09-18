@@ -1,11 +1,12 @@
-using Xunit;
 using Moq;
 using GeneralSurvey.Models;
 using GeneralSurvey.Services;
 using GeneralSurvey.Database;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class SurveyService_GetSurvey
     {
         [Fact]
@@ -14,7 +15,7 @@ namespace Prime.UnitTests.Services
             // Arrange
             var mockDbHelper = new Mock<DataBaseHelper>();
             var expectedResult = new Survey { Id = 1, Title = "Sondage 1" };
-            
+
             mockDbHelper.Setup(db => db.GetSurveyById(1)).Returns(expectedResult);
             var surveyService = new SurveyService(mockDbHelper.Object);
 
@@ -27,7 +28,7 @@ namespace Prime.UnitTests.Services
             Assert.Equal(expectedResult.Title, result.Title);
         }
 
-       [Fact]
+        [Fact]
         public void GetSurvey_ReturnsSurvey_WhenIdIsInvalid()
         {
             // Arrange

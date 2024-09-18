@@ -1,11 +1,12 @@
-﻿using Xunit;
-using Moq;
+﻿using Moq;
 using GeneralSurvey.Services;
 using GeneralSurvey.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class SurveyController_GetAnswers
     {
         [Fact]
@@ -20,7 +21,7 @@ namespace Prime.UnitTests.Services
                 ChoiceId = 0,
             };
             expectedAnswers.Add(answer);
-            
+
             mockSurveyService.Setup(s => s.GetAllAnswersBySurveyId(1)).Returns(expectedAnswers);
             var controller = new SurveyController(mockSurveyService.Object);
 

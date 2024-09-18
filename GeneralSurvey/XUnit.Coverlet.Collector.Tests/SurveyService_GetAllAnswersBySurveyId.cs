@@ -1,10 +1,11 @@
-using Xunit;
 using Moq;
 using GeneralSurvey.Services;
 using GeneralSurvey.Database;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Prime.UnitTests.Services
+namespace XUnit.Coverlet.Collector.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class SurveyService_GetAllAnswersBySurveyId
     {
         [Fact]
@@ -12,8 +13,8 @@ namespace Prime.UnitTests.Services
         {
             // Arrange
             var mockDbHelper = new Mock<DataBaseHelper>();
-            var expectedResult = new List<Answer> { new Answer { ChoiceId = 1} };
-            
+            var expectedResult = new List<Answer> { new Answer { ChoiceId = 1 } };
+
             mockDbHelper.Setup(db => db.GetAnwsersBySurveyId(1)).Returns(expectedResult);
             var surveyService = new SurveyService(mockDbHelper.Object);
 
